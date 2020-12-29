@@ -1,0 +1,63 @@
+{
+  "name": "wbs_theimprovmachine_backend",
+  "version": "1.0.0",
+  "description": "The Improv Machine (backend)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vibueno/wbs_theimprovmachine_backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vibueno/wbs_theimprovmachine_backend/issues"
+  },
+  "homepage": "https://github.com/vibueno/wbs_theimprovmachine_backend#readme",
+  "prettier": {
+    "trailingComma": "none",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true,
+    "arrowParens": "avoid"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "commonjs": true,
+      "es2021": true
+    },
+    "extends": [
+      "standard"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 12
+    },
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "semi": [
+        2,
+        "always"
+      ]
+    }
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
+    "eslint": "^7.20.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  }
+}
