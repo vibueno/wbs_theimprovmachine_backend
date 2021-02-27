@@ -1,5 +1,5 @@
-import express from 'express';
-import cors from 'cors';
+import * as express from 'express';
+import * as cors from 'cors';
 
 // Dotenv set-up
 import * as dotenv from 'dotenv';
@@ -9,7 +9,7 @@ const { PORT } = process.env;
 
 // Own imports
 // const db = require('./utils/db');
-import { msgServerStarted } from './vars/messages.js';
+import { msgServerStarted } from './vars/messages';
 
 // Start express
 const app = express();
@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Routes
-import appRoutes from './routes/App.js';
+import appRoutes from './routes/App';
 
 app.use('*', appRoutes);
 

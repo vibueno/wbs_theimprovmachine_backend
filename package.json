@@ -2,10 +2,10 @@
   "name": "wbs_theimprovmachine_backend",
   "version": "1.0.0",
   "description": "The Improv Machine (backend)",
-  "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "startsdev": "tsnd ./src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -76,11 +76,15 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.3.1",
     "jest": "^26.6.3",
+    "nodemon": "^2.0.7",
+    "ts-node": "^9.1.1",
     "typescript": "^4.2.2"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "remove": "^0.1.5",
+    "ts-node-dev": "^1.1.6"
   }
 }

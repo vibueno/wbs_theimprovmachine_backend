@@ -15,7 +15,7 @@ in the following environment:
 - [Fedora](https://getfedora.org)
 - [Atom](https://atom.io)
 
-The following steps have been performed in order to set-it up:
+The following steps have been performed in order to set-up the project:
 
 1. Create project folder
 2. Set-up node project:
@@ -64,15 +64,26 @@ npx tsc
 {
   "compilerOptions": {
     "target": "es6",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "outDir": "build"
   },
-  "include": ["./", "controllers", "routes", "utils", "vars"]
+  "include": ["src"]
 }
 ```
 
-8. Add .gitignore and make sure you ignore \*.js files
+8. Install needed types:
 
-9. Create ESLint config using:
+```bash
+npm i --save-dev @types/express
+npm i --save-dev @types/cors
+...
+```
+
+9. Add .gitignore and make sure you ignore the build directory
+
+10. Create ESLint config using:
 
 ```bash
 npx eslint --init
@@ -80,7 +91,7 @@ npx eslint --init
 
 You should then have a file called .eslintrc.json in the root folder of your project. The content of this file can be copied to package.json inside the property _eslintConfig_
 
-10. Add following rule to _eslintConfig_:
+11. Add following rule to _eslintConfig_:
 
 ```json
 "rules": {
@@ -91,8 +102,22 @@ You should then have a file called .eslintrc.json in the root folder of your pro
 }
 ```
 
-10. Now you should be able to compile your project with this command:
+12. Install ts-node
 
 ```bash
-tsc --build
+npm install ts-node-dev
 ```
+
+13. Add startsdev script in package.json:
+
+````json
+"startsdev": "tsnd ./src/index.ts"
+```
+
+14. Now you should be able to run the project:
+
+```bash
+npm run startsdev
+````
+
+If any changes happen, the project will get compiled and re-run automatically.
