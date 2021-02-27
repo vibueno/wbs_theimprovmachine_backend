@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "The Improv Machine (backend)",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "jest --coverage"
   },

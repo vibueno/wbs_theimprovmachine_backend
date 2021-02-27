@@ -1,14 +1,13 @@
-const { httpNotFound, resOpFailure } = require('../vars/constants');
-const { msgPageNotFound } = require('../vars/messages');
+import { httpNotFound, resOpFailure } from '../vars/constants.js';
+import { msgPageNotFound } from '../vars/messages.js';
+import buildResponse from '../utils/response.js';
 
 const controller = {
   pageNotFound: (req, res) => {
-    const buildResponse = require('../utils/response');
-
     res
       .status(httpNotFound)
       .json(buildResponse(httpNotFound, resOpFailure, msgPageNotFound));
   }
 };
 
-module.exports = controller;
+export default controller;

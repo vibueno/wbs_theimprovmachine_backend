@@ -1,18 +1,16 @@
-export {};
-
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
 // Dotenv set-up
-const dotenv = require('dotenv');
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 const { PORT } = process.env;
 
 // Own imports
 // const db = require('./utils/db');
-const { msgServerStarted } = require('./vars/messages');
+import { msgServerStarted, msgPageNotFound } from './vars/messages.js';
 
 // Start express
 const app = express();
@@ -24,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 // Routes
-const appRoutes = require('./routes/App');
+import appRoutes from './routes/App.js';
 
 app.use('*', appRoutes);
 

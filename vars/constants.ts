@@ -1,10 +1,15 @@
-const constants = {
-  httpOK: 200,
-  httpBadRequest: 400,
-  httpNotFound: 404,
-  httpServerError: 500,
-  resOpSuccess: 'succeeded',
-  resOpFailure: 'failed'
-};
+const httpOK = 200;
+const httpBadRequest = 400;
+const httpNotFound = 404;
+const httpServerError = 500;
+const resOpSuccess = 'succeeded';
+const resOpFailure = 'failed';
 
-module.exports = constants;
+export {
+  httpOK,
+  httpBadRequest,
+  httpNotFound,
+  httpServerError,
+  resOpSuccess,
+  resOpFailure
+};

@@ -7,4 +7,4 @@ const buildResponse = (status, operation, message, data = []) => {
   };
 };
 
-module.exports = buildResponse;
+export default buildResponse;

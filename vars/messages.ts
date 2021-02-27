@@ -1,6 +1,4 @@
-const messages = {
-  msgServerStarted: 'Server started',
-  msgPageNotFound: 'You probably need a map.'
-};
+const msgServerStarted = 'Server started';
+const msgPageNotFound = 'You seem lost. Are you improvising?';
 
-module.exports = messages;
+export { msgServerStarted, msgPageNotFound };
