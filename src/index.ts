@@ -22,7 +22,9 @@ app.use(cors());
 
 // Routes
 import appRoutes from './routes/App';
+import suggestionsRoutes from './routes/Suggestions';
 
+app.use('/suggestions', suggestionsRoutes);
 app.use('*', appRoutes);
 
 // Server start

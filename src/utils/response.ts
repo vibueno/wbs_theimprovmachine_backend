@@ -2,7 +2,7 @@ const buildResponse = (
   status: number,
   operation: string,
   message: string,
-  data = []
+  data: Array<any> = []
 ) => {
   return {
     status: status,
