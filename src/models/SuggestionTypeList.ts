@@ -1,19 +1,45 @@
-import SuggestionType from './SuggestionType';
+import { Pool, QueryConfig, QueryResult } from 'pg';
+import pool from '../utils/db';
 
 class SuggestionTypeList {
   private type: number;
-  private quantity: number;
-  private suggestions: [SuggestionType];
-  constructor(type: number, quantity: number) {
-    this.type = type;
-    this.quantity = quantity;
+  private suggestions: QueryResult;
 
-    // TODO: We should get information from the database here and
-    // fill-in the property suggestions
-    this.suggestions = [new SuggestionType('my title', 'my content')];
+  public static getDBSuggestions = async (
+    type: number,
+    amount: number
+  ): Promise<QueryResult> => {
+    const sqlQuery = `
+      SELECT *
+      FROM suggestiontypeitem
+      WHERE suggestiontypeid = $1
+      ORDER BY RANDOM()
+      LIMIT $2;`;
+
+    const query: QueryConfig = {
+      text: sqlQuery,
+      values: [type, amount]
+    };
+    const suggestions: QueryResult = await pool.query(query);
+
+    return new Promise<QueryResult>(resolve => {
+      resolve(suggestions);
+    });
+  };
+
+  constructor(type: number, suggestions: QueryResult) {
+    this.type = type;
+
+    this.suggestions = suggestions;
   }
 
-  getSuggestions = (): [SuggestionType] => {
+  getType = (): number => {
+    return this.type;
+  };
+
+  getSuggestions = (): QueryResult => {
+    //TODO: return [SuggestionType]
+
     return this.suggestions;
   };
 }

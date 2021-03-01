@@ -11,8 +11,11 @@ import { msgPageNotFound } from '../vars/messages';
 import buildResponse from '../utils/response';
 
 const controller = {
-  get: (req: Request, res: Response) => {
-    let suggestionTypeList = new SuggestionTypeList(1, 2);
+  get: async (req: Request, res: Response) => {
+    let suggestionTypeList = new SuggestionTypeList(
+      1,
+      await SuggestionTypeList.getDBSuggestions(2, 2)
+    );
     res
       .status(httpOK)
       .json(
@@ -20,7 +23,7 @@ const controller = {
           httpOK,
           resOpSuccess,
           'Here your suggestion',
-          suggestionTypeList.getSuggestions()
+          suggestionTypeList.getSuggestions().rows
         )
       );
   }
