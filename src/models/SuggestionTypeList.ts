@@ -34,8 +34,7 @@ class SuggestionTypeList {
     this.type = type;
 
     this.suggestions = suggestions.rows.map(
-      suggestion =>
-        new SuggestionType(suggestion.suggestiontypeid, suggestion.content)
+      suggestion => new SuggestionType(suggestion.title, suggestion.content)
     );
   }
 
