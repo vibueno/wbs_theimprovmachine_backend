@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
+import SuggestionType from '../models/SuggestionType';
 import SuggestionTypeList from '../models/SuggestionTypeList';
 import fillInMsgTemplate from '../utils/messagetemplate';
 import {
   msgQueryParamMissing,
   msgQueryParamWrongFormat,
-  msgServerError
+  msgServerError,
+  msgSuggestionsFetched
 } from '../vars/messages';
 
 import {
@@ -19,6 +21,14 @@ import buildResponse from '../utils/response';
 import isPositiveInt from '../utils/validations';
 
 const controller = {
+  /**
+   * returns a suggestion
+   * @async
+   * @param  req  request object of the middleware.
+   *              Expects query params type:number and amount:number
+   * @param  res  response object of the middleware
+   * @return      req.body.amount suggestions of type req.body.type
+   */
   get: async (req: Request, res: Response) => {
     try {
       if (!req.body.type)
@@ -60,16 +70,17 @@ const controller = {
           req.body.amount
         )
       );
-      res
-        .status(httpOK)
-        .json(
-          buildResponse(
-            httpOK,
-            resOpSuccess,
-            'Here your suggestion',
-            suggestionTypeList.getSuggestions()
-          )
-        );
+      res.status(httpOK).json(
+        buildResponse(
+          httpOK,
+          resOpSuccess,
+          fillInMsgTemplate(msgSuggestionsFetched, {
+            amount: req.body.amount,
+            typeTitle: await SuggestionType.getTitle(req.body.type)
+          }),
+          suggestionTypeList.getSuggestions()
+        )
+      );
     } catch (e) {
       console.error(Error(e.message));
       if (e.status) res.status(e.status).json(e);

@@ -13,9 +13,10 @@ class SuggestionTypeList {
     amount: number
   ): Promise<QueryResult> => {
     const sqlQuery = `
-      SELECT *
-      FROM suggestiontypeitem
-      WHERE suggestiontypeid = $1
+      SELECT sti.title, CONCAT(st.basepath, sti.content) as content
+      FROM suggestiontypeitem sti
+      JOIN suggestiontype st ON sti.suggestiontypeid = $1
+      WHERE st.id = sti.suggestiontypeid
       ORDER BY RANDOM()
       LIMIT $2;`;
 

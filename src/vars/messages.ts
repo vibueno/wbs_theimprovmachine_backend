@@ -5,10 +5,14 @@ const msgQueryParamMissing = 'The query param ${paramName} is mandatory';
 const msgQueryParamWrongFormat =
   'The query param ${paramName} must be a positive integer';
 
+const msgSuggestionsFetched =
+  'Successfully fetched ${amount} suggestions of type ${typeTitle}';
+
 export {
   msgServerStarted,
   msgServerError,
   msgPageNotFound,
   msgQueryParamMissing,
-  msgQueryParamWrongFormat
+  msgQueryParamWrongFormat,
+  msgSuggestionsFetched
 };

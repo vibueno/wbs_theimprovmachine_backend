@@ -6,8 +6,8 @@ CREATE TABLE suggestiontype (
     basepath VARCHAR(100)
 );
 
-INSERT INTO suggestiontype (id, title, contenttype, basepath) VALUES (1, 'object', 'image', null);
-INSERT INTO suggestiontype (id, title, contenttype, basepath) VALUES (2, 'sms', 'text', 'https://imgur.com/');
+INSERT INTO suggestiontype (id, title, contenttype, basepath) VALUES (1, 'object', 'image', 'https://imgur.com/');
+INSERT INTO suggestiontype (id, title, contenttype, basepath) VALUES (2, 'sms', 'text', null);
 
 DROP TABLE suggestiontypeitem;
 CREATE TABLE suggestiontypeitem (
