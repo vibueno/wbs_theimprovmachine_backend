@@ -2,15 +2,15 @@ import { QueryConfig, QueryResult } from 'pg';
 
 import pool from '../utils/db';
 
-class SuggestionType {
+class SuggestionCategory {
   private title: string;
   private content: string;
 
   public static getTitle = async (id: Number): Promise<string> => {
     const sqlQuery = `
-      SELECT st.title
-      FROM suggestiontype st
-      WHERE st.id = $1`;
+      SELECT sc.title
+      FROM suggestioncategory sc
+      WHERE sc.id = $1`;
 
     const query: QueryConfig = {
       text: sqlQuery,
@@ -32,4 +32,4 @@ class SuggestionType {
   getContent = (): string => this.content;
 }
 
-export default SuggestionType;
+export default SuggestionCategory;

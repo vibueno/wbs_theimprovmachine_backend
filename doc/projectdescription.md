@@ -12,13 +12,13 @@ _The Improv Machine_ is an Improv (improvisational theatre) suggestions generato
 
 **Improv:** Improvisation, or improv, is a form of live theatre in which the plot, characters and dialogue of a game, scene or story are made up in the moment. Often improvisers will take a suggestion from the audience, or draw on some other source of inspiration to get started.
 
-_The Improv Machine_ is aimed at taking over the role of the audience by generating different types of suggestions that will be used to get inspiration for creating improvised scenes.
+_The Improv Machine_ is aimed at taking over the role of the audience by generating different kinds of suggestions that will be used to get inspiration for creating improvised scenes.
 
 While its aim for now is to help improvisers during their trainings, it could also be used in live performances.
 
 ## Modules
 
-_The Improv Machine_ is built in a very modular way, so that once the basic structure is completed, adding a new type of suggestion is not very complicated.
+_The Improv Machine_ is built in a very modular way, so that once the basic structure is completed, adding a new suggestion category is not very complicated.
 
 This way, I can also ensure that, in case I run out of time, I can just leave features out, without affecting the project in a dramatic way.
 
@@ -48,7 +48,7 @@ The main body of the project will be the suggestions generator.
 
 In order to get all this information, I will be consulting different API's, databases and picture collections.
 
-All these types of suggestions will be then combined by the user to generate new improv games. Depending on the game, the software may give all the suggestions before the game starts and, in some cases, also during the performance.
+All these suggestion categories will be then combined by the user to generate new improv games. Depending on the game, the software may offer all the suggestions before the game starts and, in some cases, also during the performance.
 
 ## Bibliography
 

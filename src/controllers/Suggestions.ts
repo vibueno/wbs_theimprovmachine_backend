@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import SuggestionType from '../models/SuggestionType';
-import SuggestionTypeList from '../models/SuggestionTypeList';
+import SuggestionCategory from '../models/SuggestionCategory';
+import SuggestionCategoryList from '../models/SuggestionCategoryList';
 import fillInMsgTemplate from '../utils/messagetemplate';
 import {
   msgQueryParamMissing,
@@ -22,28 +22,28 @@ import isPositiveInt from '../utils/validations';
 
 const controller = {
   /**
-   * returns a suggestion
+   * returns a determined amount of suggestions of a specified category
    * @async
    * @param  req  request object of the middleware.
-   *              Expects query params type:number and amount:number
+   *              Expects query params :number and amount:number
    * @param  res  response object of the middleware
-   * @return      req.body.amount suggestions of type req.body.type
+   * @return      req.body.amount suggestions of category req.body.category
    */
   get: async (req: Request, res: Response) => {
     try {
-      if (!req.body.type)
+      if (!req.body.category)
         throw buildResponse(
           httpBadRequest,
           resOpFailure,
-          fillInMsgTemplate(msgQueryParamMissing, { paramName: 'type' })
+          fillInMsgTemplate(msgQueryParamMissing, { paramName: 'category' })
         );
 
-      if (!isPositiveInt(req.body.type))
+      if (!isPositiveInt(req.body.category))
         throw buildResponse(
           httpBadRequest,
           resOpFailure,
           fillInMsgTemplate(msgQueryParamWrongFormat, {
-            paramName: 'type'
+            paramName: 'category'
           })
         );
 
@@ -63,10 +63,10 @@ const controller = {
           })
         );
 
-      let suggestionTypeList = new SuggestionTypeList(
-        1,
-        await SuggestionTypeList.getDBSuggestions(
-          req.body.type,
+      let suggestionCategoryList = new SuggestionCategoryList(
+        req.body.category,
+        await SuggestionCategoryList.getDBSuggestions(
+          req.body.category,
           req.body.amount
         )
       );
@@ -76,9 +76,11 @@ const controller = {
           resOpSuccess,
           fillInMsgTemplate(msgSuggestionsFetched, {
             amount: req.body.amount,
-            typeTitle: await SuggestionType.getTitle(req.body.type)
+            suggestionCategoryTitle: await SuggestionCategory.getTitle(
+              req.body.category
+            )
           }),
-          suggestionTypeList.getSuggestions()
+          suggestionCategoryList.getSuggestions()
         )
       );
     } catch (e) {
