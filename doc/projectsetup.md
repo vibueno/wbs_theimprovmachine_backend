@@ -1,19 +1,4 @@
-# The Improv Machine - Backend - Technical Details
-
-This project have been created using:
-
-- [Atom](https://atom.io)
-- [Node.js](https://nodejs.org/en)
-- [Express.js](https://expressjs.com)
-- [TypeScript](https://www.typescriptlang.org)
-- [Jest](https://jestjs.io)
-- [ESLint](https://eslint.org)
-- [Prettier](https://prettier.io)
-
-in the following environment:
-
-- [Fedora](https://getfedora.org)
-- [Atom](https://atom.io)
+# The Improv Machine - Backend - Project set-up
 
 The following steps have been performed in order to set-up the project:
 

@@ -13,7 +13,9 @@ This repository contains the backend of _The Improv Machine_: my final project f
 
 _The Improv Machine_ is an Improv (improvisational theatre) suggestions generator that can be used by improv actors to get scenes started. For a more detailed description, check the [project description doc](./doc/projectdescription.md).
 
-If you are interested in the technical details behind this project, check the [technical doc](./doc/technicaldetails.md).
+If you are interested in how the project was set-up, check the [set-up guide](./doc/projectsetup.md).
+
+If you are interested in the technologies behind it and the standards used, check the [tech stack](./doc/techstack.md).
 
 ## Endpoints
 
@@ -21,7 +23,7 @@ For a list of all the endpoints available, check the [endpoints doc](./doc/endpo
 
 ## Frontend
 
-For checking the frontend, got to the corresponding [Github repo](https://github.com/vibueno/wbs_theimprovmachine_frontend).
+For checking the frontend, go to the corresponding [Github repo](https://github.com/vibueno/wbs_theimprovmachine_frontend).
 
 ## Live
 
