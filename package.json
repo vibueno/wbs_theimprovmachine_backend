@@ -39,7 +39,8 @@
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-      "ecmaVersion": 12
+      "ecmaVersion": 12,
+      "sourceType": "module"
     },
     "plugins": [
       "@typescript-eslint"
@@ -72,9 +73,9 @@
     "@types/cors": "^2.8.10",
     "@types/express": "^4.17.11",
     "@types/pg": "^7.14.10",
-    "@typescript-eslint/eslint-plugin": "^4.15.2",
-    "@typescript-eslint/parser": "^4.15.2",
-    "eslint": "^7.20.0",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "eslint": "^7.21.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",

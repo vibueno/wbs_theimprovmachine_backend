@@ -1,9 +1,12 @@
-import { Pool, QueryConfig, QueryResult } from 'pg';
+import { QueryConfig, QueryResult } from 'pg';
+
+import SuggestionType from '../models/SuggestionType';
+
 import pool from '../utils/db';
 
 class SuggestionTypeList {
   private type: number;
-  private suggestions: QueryResult;
+  private suggestions: SuggestionType[];
 
   public static getDBSuggestions = async (
     type: number,
@@ -30,16 +33,17 @@ class SuggestionTypeList {
   constructor(type: number, suggestions: QueryResult) {
     this.type = type;
 
-    this.suggestions = suggestions;
+    this.suggestions = suggestions.rows.map(
+      suggestion =>
+        new SuggestionType(suggestion.suggestiontypeid, suggestion.content)
+    );
   }
 
   getType = (): number => {
     return this.type;
   };
 
-  getSuggestions = (): QueryResult => {
-    //TODO: return [SuggestionType]
-
+  getSuggestions = (): SuggestionType[] => {
     return this.suggestions;
   };
 }
