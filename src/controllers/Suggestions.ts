@@ -22,15 +22,15 @@ import isPositiveInt from '../utils/validations';
 
 const controller = {
   /**
-   * returns a determined amount of suggestions of a specified category
+   * returns a determined amount of suggestions of a specified category.
    * @async
-   * @param  req  request object of the middleware.
-   *              Expects query params :number and amount:number
-   * @param  res  response object of the middleware
-   * @return      req.body.amount suggestions of category req.body.category
+   * @param {Request}  req - request object. Expects query params :number and amount:number
+   * @param {Response} res - response object.
+   * @return req.body.amount suggestions of category req.body.category.
    */
   get: async (req: Request, res: Response) => {
     try {
+      // query param validations: category
       if (!req.body.category)
         throw buildResponse(
           httpBadRequest,
@@ -47,6 +47,7 @@ const controller = {
           })
         );
 
+      // query param validations: amount
       if (!req.body.amount)
         throw buildResponse(
           httpBadRequest,

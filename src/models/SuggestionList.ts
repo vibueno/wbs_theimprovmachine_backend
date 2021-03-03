@@ -8,6 +8,15 @@ class SuggestionList {
   private category: number;
   private suggestions: Suggestion[];
 
+  /**
+   * Retrieves a specified amount of suggestions from the specified category.
+   * @async
+   * @static
+   * @param   {number} category - suggestion category from which we want to get suggestions.
+   * @param   {number} amount - amount of suggestions we want to get.
+   * @return  Promise<QueryResult>
+   */
+
   public static getDBSuggestions = async (
     category: number,
     amount: number

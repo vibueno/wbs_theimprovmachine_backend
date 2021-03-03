@@ -4,10 +4,11 @@ import pool from '../utils/db';
 
 class SuggestionCategory {
   /**
-   * Returns  the title of a suggestion category
+   * Returns the title of a suggestion category.
    * @async
-   * @param   id  id of the suggestion category whose title is being looked up
-   * @return  suggestion category title
+   * @static
+   * @param   {number} id - id of the suggestion category whose title is being looked up.
+   * @return  Promise<string>
    */
   public static getTitle = async (id: Number): Promise<string> => {
     const sqlQuery = `
