@@ -1,20 +1,30 @@
 import fillInMsgTemplate from '../messagetemplate';
-import { TemplateParamsError, NoTemplateError } from '../error';
+import { TemplateInvalidError, TemplateParamsError } from '../error';
 
 describe('Module message template', () => {
-  test('it should return "Hello world"', () => {
-    expect(fillInMsgTemplate('Hello ${param}', { param: 'world' })).toBe(
-      'Hello world'
-    );
+  test('it should throw an error if the template contains no params', () => {
+    expect(() =>
+      fillInMsgTemplate('Hello', [{ param: 'planet', value: 'Earth' }])
+    ).toThrow(TemplateInvalidError);
   });
 
-  test('it should throw an error if there are no params and no data', () => {
-    expect(() => fillInMsgTemplate('Hello', {})).toThrow(NoTemplateError);
+  test('it should throw an error if the template params are not well defined', () => {
+    expect(() =>
+      fillInMsgTemplate('Hello ${planet', [{ param: 'planet', value: 'Earth' }])
+    ).toThrow(TemplateInvalidError);
   });
 
-  test('it should throw an error if amount of params and data items do not match', () => {
-    expect(() => fillInMsgTemplate('Hello ${param}', {})).toThrow(
-      TemplateParamsError
-    );
+  test('it should throw an error if some params are not passed', () => {
+    expect(() =>
+      fillInMsgTemplate('Hello ${planet}', [{ param: 'star', value: 'sun' }])
+    ).toThrow(TemplateParamsError);
+  });
+
+  test('it should return "Hello Earth"', () => {
+    expect(
+      fillInMsgTemplate('Hello ${planet}', [
+        { param: 'planet', value: 'Earth' }
+      ])
+    ).toBe('Hello Earth');
   });
 });

@@ -5,11 +5,11 @@ class TemplateParamsError extends Error {
   }
 }
 
-class NoTemplateError extends Error {
+class TemplateInvalidError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = 'NoTemplateError';
+    this.name = 'TemplateInvalidError';
   }
 }
 
-export { TemplateParamsError, NoTemplateError };
+export { TemplateParamsError, TemplateInvalidError };

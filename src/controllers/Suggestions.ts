@@ -22,11 +22,10 @@ import isPositiveInt from '../utils/validations';
 
 const controller = {
   /**
-   * returns a determined amount of suggestions of a specified category.
+   * sends back a determined amount of suggestions of a specified category.
    * @async
-   * @param {Request}  req - request object. Expects query params :number and amount:number
-   * @param {Response} res - response object.
-   * @return req.body.amount suggestions of category req.body.category.
+   * @param {Request}   req - request object. Expects query params category:number and amount:number
+   * @param {Response}  res - response object.
    */
   get: async (req: Request, res: Response) => {
     try {
@@ -35,16 +34,18 @@ const controller = {
         throw buildResponse(
           httpBadRequest,
           resOpFailure,
-          fillInMsgTemplate(msgQueryParamMissing, { paramName: 'category' })
+          fillInMsgTemplate(msgQueryParamMissing, [
+            { param: 'paramName', value: 'category' }
+          ])
         );
 
       if (!isPositiveInt(req.body.category))
         throw buildResponse(
           httpBadRequest,
           resOpFailure,
-          fillInMsgTemplate(msgQueryParamWrongFormat, {
-            paramName: 'category'
-          })
+          fillInMsgTemplate(msgQueryParamWrongFormat, [
+            { param: 'paramName', value: 'category' }
+          ])
         );
 
       // query param validations: amount
@@ -52,16 +53,18 @@ const controller = {
         throw buildResponse(
           httpBadRequest,
           resOpFailure,
-          fillInMsgTemplate(msgQueryParamMissing, { paramName: 'amount' })
+          fillInMsgTemplate(msgQueryParamMissing, [
+            { param: 'paramName', value: 'amount' }
+          ])
         );
 
       if (!isPositiveInt(req.body.amount))
         throw buildResponse(
           httpBadRequest,
           resOpFailure,
-          fillInMsgTemplate(msgQueryParamWrongFormat, {
-            paramName: 'amount'
-          })
+          fillInMsgTemplate(msgQueryParamWrongFormat, [
+            { param: 'paramName', value: 'amount' }
+          ])
         );
 
       let suggestionList = new SuggestionList(
@@ -75,12 +78,16 @@ const controller = {
         buildResponse(
           httpOK,
           resOpSuccess,
-          fillInMsgTemplate(msgSuggestionsFetched, {
-            amount: req.body.amount,
-            suggestionCategoryTitle: await SuggestionCategory.getTitle(
-              req.body.category
-            )
-          }),
+          fillInMsgTemplate(msgSuggestionsFetched, [
+            {
+              param: 'amount',
+              value: req.body.amount
+            },
+            {
+              param: 'suggestionCategoryTitle',
+              value: await SuggestionCategory.getTitle(req.body.category)
+            }
+          ]),
           suggestionList.getSuggestions()
         )
       );
