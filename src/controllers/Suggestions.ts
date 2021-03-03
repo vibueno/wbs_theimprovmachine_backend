@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
+import SuggestionList from '../models/SuggestionList';
 import SuggestionCategory from '../models/SuggestionCategory';
-import SuggestionCategoryList from '../models/SuggestionCategoryList';
 import fillInMsgTemplate from '../utils/messagetemplate';
 import {
   msgQueryParamMissing,
@@ -63,9 +63,9 @@ const controller = {
           })
         );
 
-      let suggestionCategoryList = new SuggestionCategoryList(
+      let suggestionList = new SuggestionList(
         req.body.category,
-        await SuggestionCategoryList.getDBSuggestions(
+        await SuggestionList.getDBSuggestions(
           req.body.category,
           req.body.amount
         )
@@ -80,7 +80,7 @@ const controller = {
               req.body.category
             )
           }),
-          suggestionCategoryList.getSuggestions()
+          suggestionList.getSuggestions()
         )
       );
     } catch (e) {

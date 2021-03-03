@@ -12,6 +12,12 @@
 
 - [Fedora](https://getfedora.org)
 
+## DB
+
+- [Postgresql](https://www.postgresql.org) on [Debian Bullseye](https://www.debian.org/releases/bullseye) on [Virtual Box](https://www.virtualbox.org)
+- [ElephantSQL](https://www.elephantsql.com)
+- [PgAdmin](https://www.pgadmin.org)
+
 ## Language
 
 - [TypeScript](https://www.typescriptlang.org)
@@ -43,5 +49,5 @@
 
 ## Guidelines
 
-- [JavaScript Standard Style](https://standardjs.com/) with following exceptions:
+- [JavaScript Standard Style](https://standardjs.com) with following exceptions:
   - ending semicolon for instructions

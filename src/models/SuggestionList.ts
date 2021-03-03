@@ -1,19 +1,19 @@
 import { QueryConfig, QueryResult } from 'pg';
 
-import SuggestionCategory from '../models/SuggestionCategory';
+import Suggestion from '../models/Suggestion';
 
 import pool from '../utils/db';
 
-class SuggestionCategoryList {
+class SuggestionList {
   private category: number;
-  private suggestions: SuggestionCategory[];
+  private suggestions: Suggestion[];
 
   public static getDBSuggestions = async (
     category: number,
     amount: number
   ): Promise<QueryResult> => {
     const sqlQuery = `
-      SELECT s.title, CONCAT(sc.basepath, s.content) as content
+      SELECT sc.id, sc.title, sc.basepath, s.content
       FROM suggestion s
       JOIN suggestioncategory sc ON s.suggestioncategoryid = $1
       WHERE sc.id = s.suggestioncategoryid
@@ -35,17 +35,17 @@ class SuggestionCategoryList {
     this.category = category;
 
     this.suggestions = suggestions.rows.map(
-      suggestion => new SuggestionCategory(suggestion.title, suggestion.content)
+      suggestion => new Suggestion(suggestion.title, suggestion.content)
     );
   }
 
-  getType = (): number => {
+  getSuggestionCategory = (): number => {
     return this.category;
   };
 
-  getSuggestions = (): SuggestionCategory[] => {
+  getSuggestions = (): Suggestion[] => {
     return this.suggestions;
   };
 }
 
-export default SuggestionCategoryList;
+export default SuggestionList;

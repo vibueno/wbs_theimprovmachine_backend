@@ -3,9 +3,12 @@ import { QueryConfig, QueryResult } from 'pg';
 import pool from '../utils/db';
 
 class SuggestionCategory {
-  private title: string;
-  private content: string;
-
+  /**
+   * Returns  the title of a suggestion category
+   * @async
+   * @param   id  id of the suggestion category whose title is being looked up
+   * @return  suggestion category title
+   */
   public static getTitle = async (id: Number): Promise<string> => {
     const sqlQuery = `
       SELECT sc.title
@@ -22,14 +25,6 @@ class SuggestionCategory {
       resolve(suggestions.rows[0].title);
     });
   };
-
-  constructor(title: string, content: string) {
-    this.title = title;
-    this.content = content;
-  }
-
-  getTitle = (): string => this.title;
-  getContent = (): string => this.content;
 }
 
 export default SuggestionCategory;

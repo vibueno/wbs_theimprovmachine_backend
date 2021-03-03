@@ -13,16 +13,18 @@ DROP TABLE IF EXISTS suggestion;
 CREATE TABLE suggestion (
   id SERIAL PRIMARY KEY,
   suggestioncategoryid INTEGER NOT NULL,
-  title VARCHAR(50),
-  content VARCHAR(300) NOT NULL
+  content JSONB
 );
 
 ALTER TABLE suggestion ADD CONSTRAINT fk_suggestion_suggestioncategoryid_suggestioncategory_id FOREIGN KEY (suggestioncategoryid) REFERENCES suggestioncategory (id) ON DELETE NO ACTION;
 
-INSERT INTO suggestion (id, suggestioncategoryid, title, content) VALUES (1, 1, 'aardvark', 'LAJGlN0.jpg');
-INSERT INTO suggestion (id, suggestioncategoryid, title, content) VALUES (2, 1, 'abacus', 'peZeM0l.jpg');
-INSERT INTO suggestion (id, suggestioncategoryid, title, content) VALUES (3, 2, null, 'She didnt copy it frm me.she download it frm net da..its k u send');
-INSERT INTO suggestion (id, suggestioncategoryid, title, content) VALUES (4, 2, null, 'Ya even i didnt get any code frm ma frnds');
+/* Object pictures */
+INSERT INTO suggestion (id, suggestioncategoryid, content) VALUES (1, 1, '{"title": "aardvark", "filename": "LAJGlN0.jpg"}');
+INSERT INTO suggestion (id, suggestioncategoryid, content) VALUES (2, 1, '{"title": "abacus", "filename": "peZeM0l.jpg"}');
+
+/* SMS */
+INSERT INTO suggestion (id, suggestioncategoryid, content) VALUES (3, 2, '{"message": "She didnt copy it frm me.she download it frm net da..its k u send"}');
+INSERT INTO suggestion (id, suggestioncategoryid, content) VALUES (4, 2, '{"message": "Ya even i didnt get any code frm ma frnds"}');
 
 DROP TABLE IF EXISTS game;
 CREATE TABLE game (
