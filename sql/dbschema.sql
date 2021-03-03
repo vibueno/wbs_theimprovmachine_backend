@@ -3,11 +3,13 @@ CREATE TABLE suggestioncategory (
   id SERIAL PRIMARY KEY,
   title VARCHAR(50) NOT NULL,
   contenttype VARCHAR(10) NOT NULL,
+  sourcetype VARCHAR(3) NOT NULL,
   basepath VARCHAR(100)
 );
 
-INSERT INTO suggestioncategory (id, title, contenttype, basepath) VALUES (1, 'object', 'image', 'https://imgur.com/');
-INSERT INTO suggestioncategory (id, title, contenttype, basepath) VALUES (2, 'sms', 'text', null);
+INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (1, 'object', 'image', 'DB', 'https://imgur.com/');
+INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (2, 'SMS', 'text', 'DB', null);
+INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (3, 'random picture', 'image', 'API', 'https://picsum.photos/700/400');
 
 DROP TABLE IF EXISTS suggestion;
 CREATE TABLE suggestion (

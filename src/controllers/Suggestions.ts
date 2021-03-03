@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import SuggestionList from '../models/SuggestionList';
+import SuggestionListDB from '../models/SuggestionListDB';
 import SuggestionCategory from '../models/SuggestionCategory';
 import fillInMsgTemplate from '../utils/messagetemplate';
 import {
@@ -67,9 +67,9 @@ const controller = {
           ])
         );
 
-      let suggestionList = new SuggestionList(
+      let suggestionList = new SuggestionListDB(
         req.body.category,
-        await SuggestionList.getDBSuggestions(
+        await SuggestionListDB.getDBSuggestions(
           req.body.category,
           req.body.amount
         )
