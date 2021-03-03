@@ -1,5 +1,7 @@
 # The Improv Machine - Backend - Project set-up
 
+_Please take into account that some dependencies may have changed during the development of the project. For a completely accurate list, check package.json_
+
 The following steps have been performed in order to set-up the project:
 
 1. Create project folder
@@ -24,17 +26,17 @@ npm init
 4. Install dependencies:
 
 ```bash
-npm i nodemon
+npm i --savedev ts-node-dev
+npm i --savedev cors
 npm i dotenv
 npm i express
-npm i body-parser
-npm i cors
+...
 ```
 
 5. Install TypeScript
 
 ```bash
-npm install typescript --save-dev
+npm i typescript --save-dev
 ```
 
 6. Install TypeScript compiler
