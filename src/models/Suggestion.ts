@@ -1,11 +1,11 @@
 class Suggestion {
-  private content: string;
+  private content: object;
 
-  constructor(content: string) {
+  constructor(content: object) {
     this.content = content;
   }
 
-  getContent = (): string => this.content;
+  getContent = (): object => this.content;
 }
 
 export default Suggestion;

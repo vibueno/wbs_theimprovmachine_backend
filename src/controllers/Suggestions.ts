@@ -104,10 +104,12 @@ const controller = {
                   value: randomString(7)
                 }
               ]);
-              suggestions.push(new Suggestion(url));
+              const content = { url: url };
+
+              suggestions.push(new Suggestion(content));
             }
           }
-          // We need to generate a seed
+          // We need to process suggestions from DB
         } else {
           suggestionsDB.rows.forEach(suggestion => {
             suggestions.push(new Suggestion(suggestion.content));

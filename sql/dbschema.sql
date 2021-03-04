@@ -9,7 +9,7 @@ CREATE TABLE suggestioncategory (
 
 INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (1, 'object', 'image', 'DB', null);
 INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (2, 'SMS', 'text', 'DB', null);
-INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (3, 'random picture', 'image', 'DB', 'https://picsum.photos/seed/${seed}/200/300');
+INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (3, 'random picture', 'image', 'DB', 'https://picsum.photos/seed/${seed}/1280/720');
 INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (4, 'API source test', 'test', 'API', null);
 
 DROP TABLE IF EXISTS suggestion;
