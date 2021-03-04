@@ -1,11 +1,9 @@
 import { Request, Response } from 'express';
-import { QueryResult } from 'pg';
 
 import Suggestion from '../models/Suggestion';
 import SuggestionList from '../models/SuggestionList';
 import SuggestionCategory from '../models/SuggestionCategory';
 import { strTemplateHasParams, fillInStrTemplate } from '../utils/strtemplate';
-import { randomString } from '../utils/random';
 
 import {
   msgQueryParamMissing,
@@ -75,41 +73,6 @@ const validateQueryParams = (req: Request) => {
     );
 };
 
-/**
- * Builds a suggestions array using a random seed (used for Lorem Picsum)
- * @param {string}  basepath - URL to be completed with a seed
- * @param {number}  amount - amount of suggestion to be generated
- *
- * @return {Suggestion[]} suggestions
- */
-const processDBSuggestionReqSeed = (
-  basepath: string,
-  amount: number
-): Suggestion[] => {
-  const suggestions: Suggestion[] = [];
-
-  for (let i = 1; i <= amount; i++) {
-    let url = fillInStrTemplate(basepath, [
-      {
-        param: 'seed',
-        value: randomString(7)
-      }
-    ]);
-    const content = { url: url };
-
-    suggestions.push(new Suggestion(content));
-  }
-  return suggestions;
-};
-
-const processDBSuggestionReq = (suggestionsDB: QueryResult): Suggestion[] => {
-  const suggestions: Suggestion[] = [];
-  suggestionsDB.rows.forEach(suggestion => {
-    suggestions.push(new Suggestion(suggestion.content));
-  });
-  return suggestions;
-};
-
 const controller = {
   /**
    * sends back a determined amount of suggestions of a specified category.
@@ -148,14 +111,14 @@ const controller = {
           if (category.getBasePath()) {
             if (strTemplateHasParams(category.getBasePath())) {
               // We need to generate a seed
-              suggestions = processDBSuggestionReqSeed(
+              suggestions = SuggestionList.prepareDBSuggestionWithSeed(
                 category.getBasePath(),
                 req.body.amount
               );
             }
             // We need to process suggestions from DB
           } else {
-            suggestions = processDBSuggestionReq(suggestionsDB);
+            suggestions = SuggestionList.prepareDBSuggestions(suggestionsDB);
           }
 
           let suggestionList = new SuggestionList(category, suggestions);

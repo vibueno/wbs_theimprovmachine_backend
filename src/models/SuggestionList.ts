@@ -3,6 +3,9 @@ import { QueryConfig, QueryResult } from 'pg';
 import Suggestion from '../models/Suggestion';
 import SuggestionCategory from '../models/SuggestionCategory';
 
+import { fillInStrTemplate } from '../utils/strtemplate';
+import { randomString } from '../utils/random';
+
 class SuggestionList {
   private category: SuggestionCategory;
   private suggestions: Suggestion[];
@@ -54,6 +57,50 @@ class SuggestionList {
     amount: number
   ): Promise<string> => {
     return 'test';
+  };
+
+  /**
+   * Builds a suggestions array from a QueyResult
+   * @param {QueryResult} suggestionsDB - suggestions from DB
+   * @param {number}  amount - amount of suggestion to be generated
+   *
+   * @return {Suggestion[]} processed suggestions
+   */
+  public static prepareDBSuggestions = (
+    suggestionsDB: QueryResult
+  ): Suggestion[] => {
+    const suggestions: Suggestion[] = [];
+    suggestionsDB.rows.forEach(suggestion => {
+      suggestions.push(new Suggestion(suggestion.content));
+    });
+    return suggestions;
+  };
+
+  /**
+   * Builds a suggestions array using a random seed (used for Lorem Picsum)
+   * @param {string}  basepath - URL to be completed with a seed
+   * @param {number}  amount - amount of suggestion to be generated
+   *
+   * @return {Suggestion[]} processed suggestions
+   */
+  public static prepareDBSuggestionWithSeed = (
+    basepath: string,
+    amount: number
+  ): Suggestion[] => {
+    const suggestions: Suggestion[] = [];
+
+    for (let i = 1; i <= amount; i++) {
+      let url = fillInStrTemplate(basepath, [
+        {
+          param: 'seed',
+          value: randomString(7)
+        }
+      ]);
+      const content = { url: url };
+
+      suggestions.push(new Suggestion(content));
+    }
+    return suggestions;
   };
 
   constructor(category: SuggestionCategory, suggestions: Suggestion[]) {
