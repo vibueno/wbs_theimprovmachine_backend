@@ -3,4 +3,4 @@ const isPositiveInt = (val: string) => {
   return re.test(val);
 };
 
-export default isPositiveInt;
+export { isPositiveInt };
