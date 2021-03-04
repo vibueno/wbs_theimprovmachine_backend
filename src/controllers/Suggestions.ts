@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { QueryResult } from 'pg';
 
 import Suggestion from '../models/Suggestion';
-import SuggestionListDB from '../models/SuggestionListDB';
+import SuggestionList from '../models/SuggestionList';
 import SuggestionCategory from '../models/SuggestionCategory';
 import { strTemplateHasParams, fillInStrTemplate } from '../utils/strtemplate';
 import { randomString } from '../utils/random';
@@ -131,7 +131,7 @@ const controller = {
       );
 
       if (category.getSourceType() === 'DB') {
-        const suggestionsDB = await SuggestionListDB.getDBSuggestions(
+        const suggestionsDB = await SuggestionList.getDBSuggestions(
           req.body.category,
           req.body.amount
         );
@@ -151,7 +151,7 @@ const controller = {
           suggestions = processDBSuggestionReq(suggestionsDB);
         }
 
-        let suggestionList = new SuggestionListDB(category, suggestions);
+        let suggestionList = new SuggestionList(category, suggestions);
 
         res.status(httpOK).json(
           buildResponse(
