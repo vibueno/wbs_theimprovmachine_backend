@@ -17,8 +17,10 @@ const strTemplateHasParams = (strTemplate: string) => {
  *
  * @example: fillInStrTemplate('Hello, ${planet}', [{ planet: 'Earth' }]));
  */
+
 const fillInStrTemplate = (
   strTemplate: string,
+  //TODO: create interface
   strData: { param: string; value: string }[]
 ): string => {
   if (!strTemplateHasParams(strTemplate))

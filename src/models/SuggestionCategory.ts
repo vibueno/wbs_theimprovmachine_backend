@@ -28,6 +28,7 @@ class SuggestionCategory {
     });
   };
 
+  //TODO: create interface
   constructor(
     id: number,
     title: string,

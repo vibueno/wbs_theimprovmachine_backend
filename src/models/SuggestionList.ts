@@ -1,3 +1,9 @@
+/*
+This class has been implemented using the design pattern Static Factory Methods
+https://medium.com/codespace69/typescript-oop-constructor-overload-in-typescript-7b0ad53b5622
+https://stackify.com/static-factory-methods/
+ */
+
 import pool from '../utils/db';
 import { QueryConfig, QueryResult } from 'pg';
 import Suggestion from '../models/Suggestion';
@@ -7,9 +13,6 @@ import { fillInStrTemplate } from '../utils/strtemplate';
 import { randomString } from '../utils/random';
 
 class SuggestionList {
-  private category: SuggestionCategory;
-  private suggestions: Suggestion[];
-
   /**
    * Retrieves a specified amount of suggestions from the specified category from the DB.
    * @async
@@ -19,6 +22,10 @@ class SuggestionList {
    *
    * @return  Promise<QueryResult>
    */
+
+  private category: SuggestionCategory;
+  private suggestions: Suggestion[];
+
   public static getDBSuggestions = async (
     category: number,
     amount: number
@@ -66,15 +73,16 @@ class SuggestionList {
    *
    * @return {Suggestion[]} processed suggestions
    */
-  public static prepareDBSuggestions = (
+  public static createFromDBSuggestions(
+    category: SuggestionCategory,
     suggestionsDB: QueryResult
-  ): Suggestion[] => {
+  ): SuggestionList {
     const suggestions: Suggestion[] = [];
     suggestionsDB.rows.forEach(suggestion => {
       suggestions.push(new Suggestion(suggestion.content));
     });
-    return suggestions;
-  };
+    return new this(category, suggestions);
+  }
 
   /**
    * Builds a suggestions array using a random seed (used for Lorem Picsum)
@@ -83,36 +91,34 @@ class SuggestionList {
    *
    * @return {Suggestion[]} processed suggestions
    */
-  public static prepareDBSuggestionWithSeed = (
-    basepath: string,
+  public static createFromSeed(
+    category: SuggestionCategory,
     amount: number
-  ): Suggestion[] => {
+  ): SuggestionList {
     const suggestions: Suggestion[] = [];
 
     for (let i = 1; i <= amount; i++) {
-      let url = fillInStrTemplate(basepath, [
+      let url = fillInStrTemplate(category.getBasePath(), [
+        //TODO: create interface
         {
           param: 'seed',
           value: randomString(7)
         }
       ]);
-      const content = { url: url };
-
-      suggestions.push(new Suggestion(content));
+      suggestions.push(new Suggestion({ url: url }));
     }
-    return suggestions;
-  };
-
-  constructor(category: SuggestionCategory, suggestions: Suggestion[]) {
-    this.category = category;
-    this.suggestions = suggestions;
+    return new this(category, suggestions);
   }
 
-  getCategory = (): SuggestionCategory => {
+  constructor(category: SuggestionCategory, suggestions: Suggestion[]) {
+    (this.category = category), (this.suggestions = suggestions);
+  }
+
+  public getCategory = (): SuggestionCategory => {
     return this.category;
   };
 
-  getSuggestions = (): Suggestion[] => {
+  public getSuggestions = (): Suggestion[] => {
     return this.suggestions;
   };
 }

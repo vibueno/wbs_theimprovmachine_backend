@@ -39,6 +39,7 @@ const validateQueryParams = (req: Request) => {
     throw buildResponse(
       httpBadRequest,
       resOpFailure,
+      //TODO: create interface
       fillInStrTemplate(msgQueryParamMissing, [
         { param: 'paramName', value: 'category' }
       ])
@@ -48,6 +49,7 @@ const validateQueryParams = (req: Request) => {
     throw buildResponse(
       httpBadRequest,
       resOpFailure,
+      //TODO: create interface
       fillInStrTemplate(msgQueryParamWrongFormat, [
         { param: 'paramName', value: 'category' }
       ])
@@ -58,6 +60,7 @@ const validateQueryParams = (req: Request) => {
     throw buildResponse(
       httpBadRequest,
       resOpFailure,
+      //TODO: create interface
       fillInStrTemplate(msgQueryParamMissing, [
         { param: 'paramName', value: 'amount' }
       ])
@@ -67,6 +70,7 @@ const validateQueryParams = (req: Request) => {
     throw buildResponse(
       httpBadRequest,
       resOpFailure,
+      //TODO: create interface
       fillInStrTemplate(msgQueryParamWrongFormat, [
         { param: 'paramName', value: 'amount' }
       ])
@@ -91,12 +95,15 @@ const controller = {
       if (categoryDB.rowCount === 0)
         throw buildResponse(httpBadRequest, resOpFailure, msgCatNotFound);
 
+      const categoryDBRow = categoryDB.rows[0];
+
+      //TODO: create interface
       const category = new SuggestionCategory(
-        categoryDB.rows[0].id,
-        categoryDB.rows[0].title,
-        categoryDB.rows[0].contenttype,
-        categoryDB.rows[0].sourcetype,
-        categoryDB.rows[0].basepath
+        categoryDBRow.id,
+        categoryDBRow.title,
+        categoryDBRow.contenttype,
+        categoryDBRow.sourcetype,
+        categoryDBRow.basepath
       );
 
       switch (category.getSourceType()) {
@@ -108,20 +115,23 @@ const controller = {
 
           let suggestions: Suggestion[] = [];
 
-          if (category.getBasePath()) {
-            if (strTemplateHasParams(category.getBasePath())) {
-              // We need to generate a seed
-              suggestions = SuggestionList.prepareDBSuggestionWithSeed(
-                category.getBasePath(),
+          const basepath = category.getBasePath();
+
+          if (basepath) {
+            if (strTemplateHasParams(basepath)) {
+              const suggestionList = SuggestionList.createFromSeed(
+                category,
                 req.body.amount
               );
+              suggestions = suggestionList.getSuggestions();
             }
-            // We need to process suggestions from DB
           } else {
-            suggestions = SuggestionList.prepareDBSuggestions(suggestionsDB);
+            const suggestionList = SuggestionList.createFromDBSuggestions(
+              category,
+              suggestionsDB
+            );
+            suggestions = suggestionList.getSuggestions();
           }
-
-          let suggestionList = new SuggestionList(category, suggestions);
 
           res.status(httpOK).json(
             buildResponse(
@@ -137,7 +147,7 @@ const controller = {
                   value: category.getTitle()
                 }
               ]),
-              suggestionList.getSuggestions()
+              suggestions
             )
           );
           break;
