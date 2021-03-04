@@ -3,28 +3,51 @@ import { QueryConfig, QueryResult } from 'pg';
 import pool from '../utils/db';
 
 class SuggestionCategory {
-  /**
-   * Returns the title of a suggestion category.
-   * @async
-   * @static
-   * @param   {number} id - id of the suggestion category whose title is being looked up.
-   * @return  Promise<string>
-   */
-  public static getTitle = async (id: Number): Promise<string> => {
+  private id: number;
+  private title: string;
+  private contenttype: string;
+  private sourcetype: string;
+  private basepath: string;
+
+  public static getDBCategory = async (
+    categoryid: number
+  ): Promise<QueryResult> => {
     const sqlQuery = `
-      SELECT sc.title
-      FROM suggestioncategory sc
-      WHERE sc.id = $1`;
+    SELECT sc.id, sc.title, sc.contenttype, sc.sourcetype, sc.basepath
+    FROM suggestioncategory sc
+    WHERE sc.id = $1`;
 
     const query: QueryConfig = {
       text: sqlQuery,
-      values: [id]
+      values: [categoryid]
     };
-    const suggestions: QueryResult = await pool.query(query);
+    const category: QueryResult = await pool.query(query);
 
-    return new Promise<string>(resolve => {
-      resolve(suggestions.rows[0].title);
+    return new Promise<QueryResult>(resolve => {
+      resolve(category);
     });
+  };
+
+  constructor(
+    id: number,
+    title: string,
+    contenttype: string,
+    sourcetype: string,
+    basepath: string
+  ) {
+    this.id = id;
+    this.title = title;
+    this.contenttype = contenttype;
+    this.sourcetype = sourcetype;
+    this.basepath = basepath;
+  }
+
+  public getTitle = (): string => {
+    return this.title;
+  };
+
+  public getSourceType = (): string => {
+    return this.sourcetype;
   };
 }
 

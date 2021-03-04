@@ -1,15 +1,16 @@
 import Suggestion from '../models/Suggestion';
+import SuggestionCategory from '../models/SuggestionCategory';
 
 abstract class SuggestionList {
-  private category: number;
+  private category: SuggestionCategory;
   private suggestions: Suggestion[];
 
-  constructor(category: number, suggestions: Suggestion[]) {
+  constructor(category: SuggestionCategory, suggestions: Suggestion[]) {
     this.category = category;
     this.suggestions = suggestions;
   }
 
-  getSuggestionCategory = (): number => {
+  getCategory = (): SuggestionCategory => {
     return this.category;
   };
 

@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import Suggestion from '../models/Suggestion';
+import SuggestionListDB from '../models/SuggestionListDB';
 import SuggestionListAPI from '../models/SuggestionListAPI';
 import SuggestionCategory from '../models/SuggestionCategory';
 import { fillInMsgTemplate } from '../utils/messagetemplate';
@@ -6,12 +8,14 @@ import {
   msgQueryParamMissing,
   msgQueryParamWrongFormat,
   msgServerError,
+  msgCatSrcNotImplemented,
   msgSuggestionsFetched
 } from '../vars/messages';
 
 import {
   httpOK,
   httpBadRequest,
+  httpNotFound,
   httpServerError,
   resOpSuccess,
   resOpFailure
@@ -67,35 +71,57 @@ const controller = {
           ])
         );
 
-      /*
-      TODO: check whether we are dealing with DB or an API request
-            and create the appropriate class
-      */
+      const categoryDB = await SuggestionCategory.getDBCategory(
+        req.body.category
+      );
 
-      let suggestionList = new SuggestionListAPI(
-        req.body.category,
-        await SuggestionListAPI.getAPISuggestions(
+      const category = new SuggestionCategory(
+        categoryDB.rows[0].id,
+        categoryDB.rows[0].title,
+        categoryDB.rows[0].contenttype,
+        categoryDB.rows[0].sourcetype,
+        categoryDB.rows[0].basepath
+      );
+
+      if (category.getSourceType() === 'DB') {
+        const suggestionsDB = await SuggestionListDB.getDBSuggestions(
           req.body.category,
           req.body.amount
-        )
-      );
-      res.status(httpOK).json(
-        buildResponse(
-          httpOK,
-          resOpSuccess,
-          fillInMsgTemplate(msgSuggestionsFetched, [
-            {
-              param: 'amount',
-              value: req.body.amount
-            },
-            {
-              param: 'suggestionCategoryTitle',
-              value: await SuggestionCategory.getTitle(req.body.category)
-            }
-          ]),
-          suggestionList.getSuggestions()
-        )
-      );
+        );
+
+        const suggestions = suggestionsDB.rows.map(
+          suggestion => new Suggestion(suggestion.title, suggestion.content)
+        );
+        let suggestionList = new SuggestionListDB(category, suggestions);
+
+        res.status(httpOK).json(
+          buildResponse(
+            httpOK,
+            resOpSuccess,
+            fillInMsgTemplate(msgSuggestionsFetched, [
+              {
+                param: 'amount',
+                value: req.body.amount
+              },
+              {
+                param: 'suggestionCategoryTitle',
+                value: suggestionList.getCategory().getTitle()
+              }
+            ]),
+            suggestionList.getSuggestions()
+          )
+        );
+      } else
+        res
+          .status(httpServerError)
+          .json(
+            buildResponse(
+              httpNotFound,
+              resOpSuccess,
+              msgCatSrcNotImplemented,
+              []
+            )
+          );
     } catch (e) {
       console.error(Error(e.message));
       if (e.status) res.status(e.status).json(e);

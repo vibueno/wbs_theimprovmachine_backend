@@ -1,6 +1,7 @@
 import { QueryConfig, QueryResult } from 'pg';
 
 import Suggestion from '../models/Suggestion';
+import SuggestionCategory from '../models/SuggestionCategory';
 import SuggestionList from '../models/SuggestionList';
 
 import pool from '../utils/db';
@@ -38,13 +39,8 @@ class SuggestionListDB extends SuggestionList {
     });
   };
 
-  constructor(category: number, suggestionsDB: QueryResult) {
-    super(
-      category,
-      suggestionsDB.rows.map(
-        suggestion => new Suggestion(suggestion.title, suggestion.content)
-      )
-    );
+  constructor(category: SuggestionCategory, suggestions: Suggestion[]) {
+    super(category, suggestions);
   }
 }
 
