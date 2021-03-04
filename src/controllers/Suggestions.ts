@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { QueryResult } from 'pg';
+
 import Suggestion from '../models/Suggestion';
 import SuggestionListDB from '../models/SuggestionListDB';
-import SuggestionListAPI from '../models/SuggestionListAPI';
 import SuggestionCategory from '../models/SuggestionCategory';
 import { strTemplateHasParams, fillInStrTemplate } from '../utils/strtemplate';
 import { randomString } from '../utils/random';
@@ -26,6 +27,86 @@ import buildResponse from '../utils/response';
 
 import { isPositiveInt } from '../utils/validations';
 
+/**
+ * validates the query params of the get request. In case of invalidty, exceptions are thrown
+ * @param {Request} req - request object. Expects query params category:number and amount:number
+ */
+const validateQueryParams = (req: Request) => {
+  const { category, amount } = req.body;
+
+  if (!category)
+    throw buildResponse(
+      httpBadRequest,
+      resOpFailure,
+      fillInStrTemplate(msgQueryParamMissing, [
+        { param: 'paramName', value: 'category' }
+      ])
+    );
+
+  if (!isPositiveInt(category))
+    throw buildResponse(
+      httpBadRequest,
+      resOpFailure,
+      fillInStrTemplate(msgQueryParamWrongFormat, [
+        { param: 'paramName', value: 'category' }
+      ])
+    );
+
+  // query param validations: amount
+  if (!amount)
+    throw buildResponse(
+      httpBadRequest,
+      resOpFailure,
+      fillInStrTemplate(msgQueryParamMissing, [
+        { param: 'paramName', value: 'amount' }
+      ])
+    );
+
+  if (!isPositiveInt(amount))
+    throw buildResponse(
+      httpBadRequest,
+      resOpFailure,
+      fillInStrTemplate(msgQueryParamWrongFormat, [
+        { param: 'paramName', value: 'amount' }
+      ])
+    );
+};
+
+/**
+ * Builds a suggestions array using a random seed (used for Lorem Picsum)
+ * @param {string}  basepath - URL to be completed with a seed
+ * @param {number}  amount - amount of suggestion to be generated
+ *
+ * @return {Suggestion[]} suggestions
+ */
+const processDBSuggestionReqSeed = (
+  basepath: string,
+  amount: number
+): Suggestion[] => {
+  const suggestions: Suggestion[] = [];
+
+  for (let i = 1; i <= amount; i++) {
+    let url = fillInStrTemplate(basepath, [
+      {
+        param: 'seed',
+        value: randomString(7)
+      }
+    ]);
+    const content = { url: url };
+
+    suggestions.push(new Suggestion(content));
+  }
+  return suggestions;
+};
+
+const processDBSuggestionReq = (suggestionsDB: QueryResult): Suggestion[] => {
+  const suggestions: Suggestion[] = [];
+  suggestionsDB.rows.forEach(suggestion => {
+    suggestions.push(new Suggestion(suggestion.content));
+  });
+  return suggestions;
+};
+
 const controller = {
   /**
    * sends back a determined amount of suggestions of a specified category.
@@ -35,43 +116,7 @@ const controller = {
    */
   get: async (req: Request, res: Response) => {
     try {
-      // query param validations: category
-      if (!req.body.category)
-        throw buildResponse(
-          httpBadRequest,
-          resOpFailure,
-          fillInStrTemplate(msgQueryParamMissing, [
-            { param: 'paramName', value: 'category' }
-          ])
-        );
-
-      if (!isPositiveInt(req.body.category))
-        throw buildResponse(
-          httpBadRequest,
-          resOpFailure,
-          fillInStrTemplate(msgQueryParamWrongFormat, [
-            { param: 'paramName', value: 'category' }
-          ])
-        );
-
-      // query param validations: amount
-      if (!req.body.amount)
-        throw buildResponse(
-          httpBadRequest,
-          resOpFailure,
-          fillInStrTemplate(msgQueryParamMissing, [
-            { param: 'paramName', value: 'amount' }
-          ])
-        );
-
-      if (!isPositiveInt(req.body.amount))
-        throw buildResponse(
-          httpBadRequest,
-          resOpFailure,
-          fillInStrTemplate(msgQueryParamWrongFormat, [
-            { param: 'paramName', value: 'amount' }
-          ])
-        );
+      validateQueryParams(req);
 
       const categoryDB = await SuggestionCategory.getDBCategory(
         req.body.category
@@ -91,30 +136,21 @@ const controller = {
           req.body.amount
         );
 
-        const suggestions: Suggestion[] = [];
+        let suggestions: Suggestion[] = [];
 
         if (category.getBasePath()) {
-          // We need to generate a seed
-
           if (strTemplateHasParams(category.getBasePath())) {
-            for (let i = 1; i <= req.body.amount; i++) {
-              let url = fillInStrTemplate(category.getBasePath(), [
-                {
-                  param: 'seed',
-                  value: randomString(7)
-                }
-              ]);
-              const content = { url: url };
-
-              suggestions.push(new Suggestion(content));
-            }
+            // We need to generate a seed
+            suggestions = processDBSuggestionReqSeed(
+              category.getBasePath(),
+              req.body.amount
+            );
           }
           // We need to process suggestions from DB
         } else {
-          suggestionsDB.rows.forEach(suggestion => {
-            suggestions.push(new Suggestion(suggestion.content));
-          });
+          suggestions = processDBSuggestionReq(suggestionsDB);
         }
+
         let suggestionList = new SuggestionListDB(category, suggestions);
 
         res.status(httpOK).json(
