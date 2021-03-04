@@ -3,7 +3,7 @@ import Suggestion from '../models/Suggestion';
 import SuggestionListDB from '../models/SuggestionListDB';
 import SuggestionListAPI from '../models/SuggestionListAPI';
 import SuggestionCategory from '../models/SuggestionCategory';
-import { templateHasParams, fillInMsgTemplate } from '../utils/messagetemplate';
+import { strTemplateHasParams, fillInStrTemplate } from '../utils/strtemplate';
 import { randomString } from '../utils/random';
 
 import {
@@ -40,7 +40,7 @@ const controller = {
         throw buildResponse(
           httpBadRequest,
           resOpFailure,
-          fillInMsgTemplate(msgQueryParamMissing, [
+          fillInStrTemplate(msgQueryParamMissing, [
             { param: 'paramName', value: 'category' }
           ])
         );
@@ -49,7 +49,7 @@ const controller = {
         throw buildResponse(
           httpBadRequest,
           resOpFailure,
-          fillInMsgTemplate(msgQueryParamWrongFormat, [
+          fillInStrTemplate(msgQueryParamWrongFormat, [
             { param: 'paramName', value: 'category' }
           ])
         );
@@ -59,7 +59,7 @@ const controller = {
         throw buildResponse(
           httpBadRequest,
           resOpFailure,
-          fillInMsgTemplate(msgQueryParamMissing, [
+          fillInStrTemplate(msgQueryParamMissing, [
             { param: 'paramName', value: 'amount' }
           ])
         );
@@ -68,7 +68,7 @@ const controller = {
         throw buildResponse(
           httpBadRequest,
           resOpFailure,
-          fillInMsgTemplate(msgQueryParamWrongFormat, [
+          fillInStrTemplate(msgQueryParamWrongFormat, [
             { param: 'paramName', value: 'amount' }
           ])
         );
@@ -96,9 +96,9 @@ const controller = {
         if (category.getBasePath()) {
           // We need to generate a seed
 
-          if (templateHasParams(category.getBasePath())) {
+          if (strTemplateHasParams(category.getBasePath())) {
             for (let i = 1; i <= req.body.amount; i++) {
-              let url = fillInMsgTemplate(category.getBasePath(), [
+              let url = fillInStrTemplate(category.getBasePath(), [
                 {
                   param: 'seed',
                   value: randomString(7)
@@ -121,7 +121,7 @@ const controller = {
           buildResponse(
             httpOK,
             resOpSuccess,
-            fillInMsgTemplate(msgSuggestionsFetched, [
+            fillInStrTemplate(msgSuggestionsFetched, [
               {
                 param: 'amount',
                 value: req.body.amount
