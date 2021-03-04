@@ -13,6 +13,7 @@ class SuggestionList {
    * @static
    * @param   {number} category - suggestion category from which we want to get suggestions.
    * @param   {number} amount - amount of suggestions we want to get.
+   *
    * @return  Promise<QueryResult>
    */
   public static getDBSuggestions = async (
@@ -44,6 +45,7 @@ class SuggestionList {
    * @static
    * @param   {number} category - suggestion category from which we want to get suggestions.
    * @param   {number} amount - amount of suggestions we want to get.
+   *
    * @return  Promise<string>
    */
 

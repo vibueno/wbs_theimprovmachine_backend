@@ -11,8 +11,13 @@ const msgQueryParamWrongFormat =
 const msgSuggestionsFetched =
   'Successfully fetched ${amount} suggestions of category "${suggestionCategoryTitle}"';
 
+const msgCatNotFound = 'The requested suggestion category does not exist';
+
 const msgCatSrcNotImplemented =
   'The requested suggestion category makes use of external APIs. This functionality has not been implemented yet';
+
+const msgCatSrcInvalid =
+  'The requested suggestion category source does not exist';
 
 // Message templates
 const msgTemplateInvalid = 'The string provided does not seem to be a template';
@@ -25,7 +30,9 @@ export {
   msgQueryParamMissing,
   msgQueryParamWrongFormat,
   msgSuggestionsFetched,
+  msgCatNotFound,
   msgCatSrcNotImplemented,
+  msgCatSrcInvalid,
   msgTemplateInvalid,
   msgTemplateArgs
 };

@@ -12,6 +12,8 @@ import {
   msgQueryParamWrongFormat,
   msgServerError,
   msgCatSrcNotImplemented,
+  msgCatSrcInvalid,
+  msgCatNotFound,
   msgSuggestionsFetched
 } from '../vars/messages';
 
@@ -29,11 +31,12 @@ import { isPositiveInt } from '../utils/validations';
 
 /**
  * validates the query params of the get request. In case of invalidty, exceptions are thrown
- * @param {Request} req - request object. Expects query params category:number and amount:number
+ * @param {Request} req - Expects query params category:number and amount:number
  */
 const validateQueryParams = (req: Request) => {
   const { category, amount } = req.body;
 
+  // query param validations: category
   if (!category)
     throw buildResponse(
       httpBadRequest,
@@ -122,6 +125,9 @@ const controller = {
         req.body.category
       );
 
+      if (categoryDB.rowCount === 0)
+        throw buildResponse(httpBadRequest, resOpFailure, msgCatNotFound);
+
       const category = new SuggestionCategory(
         categoryDB.rows[0].id,
         categoryDB.rows[0].title,
@@ -130,57 +136,63 @@ const controller = {
         categoryDB.rows[0].basepath
       );
 
-      if (category.getSourceType() === 'DB') {
-        const suggestionsDB = await SuggestionList.getDBSuggestions(
-          req.body.category,
-          req.body.amount
-        );
+      switch (category.getSourceType()) {
+        case 'DB':
+          const suggestionsDB = await SuggestionList.getDBSuggestions(
+            req.body.category,
+            req.body.amount
+          );
 
-        let suggestions: Suggestion[] = [];
+          let suggestions: Suggestion[] = [];
 
-        if (category.getBasePath()) {
-          if (strTemplateHasParams(category.getBasePath())) {
-            // We need to generate a seed
-            suggestions = processDBSuggestionReqSeed(
-              category.getBasePath(),
-              req.body.amount
-            );
+          if (category.getBasePath()) {
+            if (strTemplateHasParams(category.getBasePath())) {
+              // We need to generate a seed
+              suggestions = processDBSuggestionReqSeed(
+                category.getBasePath(),
+                req.body.amount
+              );
+            }
+            // We need to process suggestions from DB
+          } else {
+            suggestions = processDBSuggestionReq(suggestionsDB);
           }
-          // We need to process suggestions from DB
-        } else {
-          suggestions = processDBSuggestionReq(suggestionsDB);
-        }
 
-        let suggestionList = new SuggestionList(category, suggestions);
+          let suggestionList = new SuggestionList(category, suggestions);
 
-        res.status(httpOK).json(
-          buildResponse(
-            httpOK,
-            resOpSuccess,
-            fillInStrTemplate(msgSuggestionsFetched, [
-              {
-                param: 'amount',
-                value: req.body.amount
-              },
-              {
-                param: 'suggestionCategoryTitle',
-                value: category.getTitle()
-              }
-            ]),
-            suggestionList.getSuggestions()
-          )
-        );
-      } else
-        res
-          .status(httpServerError)
-          .json(
+          res.status(httpOK).json(
             buildResponse(
-              httpNotFound,
+              httpOK,
               resOpSuccess,
-              msgCatSrcNotImplemented,
-              []
+              fillInStrTemplate(msgSuggestionsFetched, [
+                {
+                  param: 'amount',
+                  value: req.body.amount
+                },
+                {
+                  param: 'suggestionCategoryTitle',
+                  value: category.getTitle()
+                }
+              ]),
+              suggestionList.getSuggestions()
             )
           );
+          break;
+        case 'API':
+          res
+            .status(httpServerError)
+            .json(
+              buildResponse(
+                httpNotFound,
+                resOpSuccess,
+                msgCatSrcNotImplemented,
+                []
+              )
+            );
+          break;
+        default:
+          throw buildResponse(httpBadRequest, resOpFailure, msgCatSrcInvalid);
+      }
     } catch (e) {
       console.error(Error(e.message));
       if (e.status) res.status(e.status).json(e);
