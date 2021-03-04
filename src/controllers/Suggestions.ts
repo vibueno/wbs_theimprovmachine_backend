@@ -18,7 +18,7 @@ import {
 } from '../vars/constants';
 import buildResponse from '../utils/response';
 
-import isPositiveInt from '../utils/validations';
+import { isPositiveInt } from '../utils/validations';
 
 const controller = {
   /**
