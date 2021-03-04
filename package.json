@@ -56,13 +56,15 @@
     "testEnvironment": "node",
     "verbose": true,
     "collectCoverageFrom": [
-      "./src/**/{!(index),}.js"
+      "./src/**/*"
     ],
     "transform": {
       "^.+\\.ts?$": "ts-jest"
     },
     "coveragePathIgnorePatterns": [
-      "/node_modules/"
+      "/node_modules/",
+      ".src/index.ts",
+      ".src/routes"
     ],
     "coverageThreshold": {
       "global": {
