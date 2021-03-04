@@ -3,7 +3,9 @@ import Suggestion from '../models/Suggestion';
 import SuggestionListDB from '../models/SuggestionListDB';
 import SuggestionListAPI from '../models/SuggestionListAPI';
 import SuggestionCategory from '../models/SuggestionCategory';
-import { fillInMsgTemplate } from '../utils/messagetemplate';
+import { templateHasParams, fillInMsgTemplate } from '../utils/messagetemplate';
+import { randomString } from '../utils/random';
+
 import {
   msgQueryParamMissing,
   msgQueryParamWrongFormat,
@@ -89,9 +91,28 @@ const controller = {
           req.body.amount
         );
 
-        const suggestions = suggestionsDB.rows.map(
-          suggestion => new Suggestion(suggestion.title, suggestion.content)
-        );
+        const suggestions: Suggestion[] = [];
+
+        if (category.getBasePath()) {
+          // We need to generate a seed
+
+          if (templateHasParams(category.getBasePath())) {
+            for (let i = 1; i <= req.body.amount; i++) {
+              let url = fillInMsgTemplate(category.getBasePath(), [
+                {
+                  param: 'seed',
+                  value: randomString(7)
+                }
+              ]);
+              suggestions.push(new Suggestion(url));
+            }
+          }
+          // We need to generate a seed
+        } else {
+          suggestionsDB.rows.forEach(suggestion => {
+            suggestions.push(new Suggestion(suggestion.content));
+          });
+        }
         let suggestionList = new SuggestionListDB(category, suggestions);
 
         res.status(httpOK).json(
@@ -105,7 +126,7 @@ const controller = {
               },
               {
                 param: 'suggestionCategoryTitle',
-                value: suggestionList.getCategory().getTitle()
+                value: category.getTitle()
               }
             ]),
             suggestionList.getSuggestions()

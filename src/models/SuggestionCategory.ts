@@ -49,6 +49,10 @@ class SuggestionCategory {
   public getSourceType = (): string => {
     return this.sourcetype;
   };
+
+  public getBasePath = (): string => {
+    return this.basepath;
+  };
 }
 
 export default SuggestionCategory;

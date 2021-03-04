@@ -7,10 +7,10 @@ CREATE TABLE suggestioncategory (
   basepath VARCHAR(100)
 );
 
-INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (1, 'object', 'image', 'DB', 'https://imgur.com/');
+INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (1, 'object', 'image', 'DB', null);
 INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (2, 'SMS', 'text', 'DB', null);
 INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (3, 'random picture', 'image', 'DB', 'https://picsum.photos/seed/${seed}/200/300');
-INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (4, 'API source test', 'test', 'API', 'test');
+INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (4, 'API source test', 'test', 'API', null);
 
 DROP TABLE IF EXISTS suggestion;
 CREATE TABLE suggestion (
@@ -22,12 +22,12 @@ CREATE TABLE suggestion (
 ALTER TABLE suggestion ADD CONSTRAINT fk_suggestion_suggestioncategoryid_suggestioncategory_id FOREIGN KEY (suggestioncategoryid) REFERENCES suggestioncategory (id) ON DELETE NO ACTION;
 
 /* Object pictures */
-INSERT INTO suggestion (id, suggestioncategoryid, content) VALUES (1, 1, '{"title": "aardvark", "filename": "LAJGlN0.jpg"}');
-INSERT INTO suggestion (id, suggestioncategoryid, content) VALUES (2, 1, '{"title": "abacus", "filename": "peZeM0l.jpg"}');
+INSERT INTO suggestion (id, suggestioncategoryid, content) VALUES (1, 1, '{"text": "aardvark", "url": "https://imgur.com/LAJGlN0.jpg"}');
+INSERT INTO suggestion (id, suggestioncategoryid, content) VALUES (2, 1, '{"text": "abacus", "url": "https://imgur.com/peZeM0l.jpg"}');
 
 /* SMS */
-INSERT INTO suggestion (id, suggestioncategoryid, content) VALUES (3, 2, '{"message": "She didnt copy it frm me.she download it frm net da..its k u send"}');
-INSERT INTO suggestion (id, suggestioncategoryid, content) VALUES (4, 2, '{"message": "Ya even i didnt get any code frm ma frnds"}');
+INSERT INTO suggestion (id, suggestioncategoryid, content) VALUES (3, 2, '{"text": "She didnt copy it frm me.she download it frm net da..its k u send"}');
+INSERT INTO suggestion (id, suggestioncategoryid, content) VALUES (4, 2, '{"text": "Ya even i didnt get any code frm ma frnds"}');
 
 DROP TABLE IF EXISTS game;
 CREATE TABLE game (

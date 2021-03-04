@@ -1,7 +1,7 @@
 import Suggestion from '../models/Suggestion';
 import SuggestionCategory from '../models/SuggestionCategory';
 
-abstract class SuggestionList {
+class SuggestionList {
   private category: SuggestionCategory;
   private suggestions: Suggestion[];
 
