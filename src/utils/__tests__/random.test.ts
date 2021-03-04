@@ -1,6 +1,6 @@
 import { randomString } from '../random';
 
-describe('Module random string', () => {
+describe('Module random', () => {
   test('it should return a string of length 5', () => {
     expect(randomString(5).length).toBe(5);
   });
