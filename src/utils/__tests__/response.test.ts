@@ -29,5 +29,15 @@ describe('Module validations', () => {
     test('it should return an object with a key called "data"', () => {
       expect(response.data).toBeDefined();
     });
+
+    test('it should return an empty array for "data" if no value provided', () => {
+      expect(
+        buildResponse(
+          httpOK,
+          resOpSuccess,
+          'Suggestions retrieved successfully'
+        ).data
+      ).toStrictEqual([]);
+    });
   });
 });
