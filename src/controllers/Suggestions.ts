@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import SuggestionListDB from '../models/SuggestionListDB';
+import SuggestionListAPI from '../models/SuggestionListAPI';
 import SuggestionCategory from '../models/SuggestionCategory';
-import fillInMsgTemplate from '../utils/messagetemplate';
+import { fillInMsgTemplate } from '../utils/messagetemplate';
 import {
   msgQueryParamMissing,
   msgQueryParamWrongFormat,
@@ -67,9 +67,14 @@ const controller = {
           ])
         );
 
-      let suggestionList = new SuggestionListDB(
+      /*
+      TODO: check whether we are dealing with DB or an API request
+            and create the appropriate class
+      */
+
+      let suggestionList = new SuggestionListAPI(
         req.body.category,
-        await SuggestionListDB.getDBSuggestions(
+        await SuggestionListAPI.getAPISuggestions(
           req.body.category,
           req.body.amount
         )

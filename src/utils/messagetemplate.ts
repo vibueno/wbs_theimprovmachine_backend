@@ -39,4 +39,4 @@ const fillInMsgTemplate = (
   return filledInMessage;
 };
 
-export default fillInMsgTemplate;
+export { templateHasParams, fillInMsgTemplate };

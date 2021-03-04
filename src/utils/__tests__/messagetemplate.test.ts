@@ -1,4 +1,4 @@
-import fillInMsgTemplate from '../messagetemplate';
+import { fillInMsgTemplate } from '../messagetemplate';
 import { TemplateInvalidError, TemplateParamsError } from '../error';
 
 describe('Module message template', () => {
