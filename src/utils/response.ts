@@ -1,9 +1,15 @@
+import Suggestion from '../models/Suggestion';
+import SuggestionCategory from '../models/SuggestionCategory';
+
+import ResponseData from '../types/ResponseData';
+import Response from '../types/Response';
+
 const buildResponse = (
   status: number,
   operation: string,
   message: string,
-  data: Array<any> = []
-) => {
+  data: object = {}
+): Response => {
   return {
     status: status,
     operation: operation,
@@ -11,5 +17,18 @@ const buildResponse = (
     data: data
   };
 };
+const buildResponseData = (
+  category: SuggestionCategory,
+  suggestions: Suggestion[]
+): ResponseData => {
+  const suggestionsContent = suggestions.map(suggestion =>
+    suggestion.getContent()
+  );
 
-export default buildResponse;
+  return {
+    category: category.getTitle(),
+    suggestions: suggestionsContent
+  };
+};
+
+export { buildResponse, buildResponseData };

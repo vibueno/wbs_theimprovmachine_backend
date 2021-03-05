@@ -20,7 +20,7 @@ import {
   operationResult,
   categorySources
 } from '../vars/constants';
-import buildResponse from '../utils/response';
+import { buildResponse, buildResponseData } from '../utils/response';
 
 import { isPositiveInt } from '../utils/validations';
 
@@ -134,7 +134,7 @@ const controller = {
                   value: category.getTitle()
                 }
               ]),
-              suggestions
+              buildResponseData(category, suggestions)
             )
           );
           break;
@@ -145,8 +145,7 @@ const controller = {
               buildResponse(
                 httpResponse.notFound,
                 operationResult.success,
-                msgCatSrcNotImplemented,
-                []
+                msgCatSrcNotImplemented
               )
             );
           break;
