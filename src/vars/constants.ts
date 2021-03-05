@@ -5,10 +5,10 @@ const httpServerError = 500;
 const resOpSuccess = 'succeeded';
 const resOpFailure = 'failed';
 
-const categorySources = {
-  DB: 'DB',
-  API: 'API'
-};
+enum categorySources {
+  DB = 'DB',
+  API = 'API'
+}
 
 export {
   httpOK,

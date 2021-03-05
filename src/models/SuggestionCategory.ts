@@ -10,16 +10,16 @@ class SuggestionCategory {
   private basepath: string;
 
   public static getDBCategory = async (
-    categoryid: number
+    categoryTitle: string
   ): Promise<QueryResult> => {
     const sqlQuery = `
     SELECT sc.id, sc.title, sc.contenttype, sc.sourcetype, sc.basepath
     FROM suggestioncategory sc
-    WHERE sc.id = $1`;
+    WHERE sc.title = $1`;
 
     const query: QueryConfig = {
       text: sqlQuery,
-      values: [categoryid]
+      values: [categoryTitle]
     };
     const category: QueryResult = await pool.query(query);
 
@@ -28,7 +28,6 @@ class SuggestionCategory {
     });
   };
 
-  //TODO: create interface
   constructor(
     id: number,
     title: string,
@@ -42,6 +41,10 @@ class SuggestionCategory {
     this.sourcetype = sourcetype;
     this.basepath = basepath;
   }
+
+  public getId = (): number => {
+    return this.id;
+  };
 
   public getTitle = (): string => {
     return this.title;

@@ -45,15 +45,6 @@ const validateQueryParams = (req: Request) => {
       ])
     );
 
-  if (!isPositiveInt(category))
-    throw buildResponse(
-      httpBadRequest,
-      resOpFailure,
-      fillInStrTemplate(msgQueryParamWrongFormat, [
-        { param: 'paramName', value: 'category' }
-      ])
-    );
-
   // query param validations: amount
   if (!amount)
     throw buildResponse(
@@ -105,7 +96,7 @@ const controller = {
       switch (category.getSourceType()) {
         case categorySources.DB:
           const suggestionsDB = await SuggestionList.getDBSuggestions(
-            req.body.category,
+            category.getId(),
             req.body.amount
           );
 

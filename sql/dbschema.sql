@@ -1,22 +1,27 @@
 DROP TABLE IF EXISTS suggestioncategory CASCADE;
+DROP TYPE IF EXISTS contenttype;
+CREATE TYPE contenttype AS ENUM ( 'image', 'text' );
+DROP TYPE IF EXISTS sourcetype;
+CREATE TYPE sourcetype AS ENUM ( 'DB', 'API' );
+
 CREATE TABLE suggestioncategory (
   id SERIAL PRIMARY KEY,
-  title VARCHAR(50) NOT NULL,
-  contenttype VARCHAR(10) NOT NULL,
-  sourcetype VARCHAR(3) NOT NULL,
+  title VARCHAR(50) UNIQUE NOT NULL,
+  contenttype contenttype NOT NULL,
+  sourcetype sourcetype NOT NULL,
   basepath VARCHAR(100)
 );
 
 INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (1, 'object', 'image', 'DB', null);
-INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (2, 'SMS', 'text', 'DB', null);
-INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (3, 'random picture', 'image', 'DB', 'https://picsum.photos/seed/${seed}/1280/720');
-INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (4, 'API source test', 'test', 'API', null);
+INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (2, 'sms', 'text', 'DB', null);
+INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (3, 'randomimage', 'image', 'DB', 'https://picsum.photos/seed/${seed}/1280/720');
+INSERT INTO suggestioncategory (id, title, contenttype, sourcetype, basepath) VALUES (4, 'apitest', 'text', 'API', null);
 
 DROP TABLE IF EXISTS suggestion;
 CREATE TABLE suggestion (
   id SERIAL PRIMARY KEY,
   suggestioncategoryid INTEGER NOT NULL,
-  content JSONB
+  content JSONB NOT NULL
 );
 
 ALTER TABLE suggestion ADD CONSTRAINT fk_suggestion_suggestioncategoryid_suggestioncategory_id FOREIGN KEY (suggestioncategoryid) REFERENCES suggestioncategory (id) ON DELETE NO ACTION;
