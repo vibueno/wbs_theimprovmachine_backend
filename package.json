@@ -61,10 +61,13 @@
     "transform": {
       "^.+\\.ts?$": "ts-jest"
     },
+    "testPathIgnorePatterns": [
+      "./build"
+    ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
-      ".src/index.ts",
-      ".src/routes"
+      "./src/index.ts",
+      "./src/routes"
     ],
     "coverageThreshold": {
       "global": {
