@@ -21,7 +21,8 @@ import {
   httpNotFound,
   httpServerError,
   resOpSuccess,
-  resOpFailure
+  resOpFailure,
+  categorySources
 } from '../vars/constants';
 import buildResponse from '../utils/response';
 
@@ -107,7 +108,7 @@ const controller = {
       );
 
       switch (category.getSourceType()) {
-        case 'DB':
+        case categorySources.DB:
           const suggestionsDB = await SuggestionList.getDBSuggestions(
             req.body.category,
             req.body.amount
@@ -151,7 +152,7 @@ const controller = {
             )
           );
           break;
-        case 'API':
+        case categorySources.API:
           res
             .status(httpServerError)
             .json(

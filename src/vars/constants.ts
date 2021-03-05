@@ -5,11 +5,17 @@ const httpServerError = 500;
 const resOpSuccess = 'succeeded';
 const resOpFailure = 'failed';
 
+const categorySources = {
+  DB: 'DB',
+  API: 'API'
+};
+
 export {
   httpOK,
   httpBadRequest,
   httpNotFound,
   httpServerError,
   resOpSuccess,
-  resOpFailure
+  resOpFailure,
+  categorySources
 };
