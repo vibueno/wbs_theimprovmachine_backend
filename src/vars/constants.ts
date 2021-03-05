@@ -1,21 +1,18 @@
-const httpOK = 200;
-const httpBadRequest = 400;
-const httpNotFound = 404;
-const httpServerError = 500;
-const resOpSuccess = 'succeeded';
-const resOpFailure = 'failed';
+enum httpResponse {
+  OK = 200,
+  badRequest = 400,
+  notFound = 404,
+  serverError = 500
+}
+
+enum operationResult {
+  success = 'succeeded',
+  fail = 'failed'
+}
 
 enum categorySources {
   DB = 'DB',
   API = 'API'
 }
 
-export {
-  httpOK,
-  httpBadRequest,
-  httpNotFound,
-  httpServerError,
-  resOpSuccess,
-  resOpFailure,
-  categorySources
-};
+export { httpResponse, operationResult, categorySources };

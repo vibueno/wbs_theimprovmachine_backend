@@ -1,10 +1,10 @@
 import buildResponse from '../response';
-import { httpOK, resOpSuccess } from '../../vars/constants';
+import { httpResponse, operationResult } from '../../vars/constants';
 
 describe('Module validations', () => {
   const response = buildResponse(
-    httpOK,
-    resOpSuccess,
+    httpResponse.OK,
+    operationResult.success,
     'Suggestions retrieved successfully',
     [{ picture: 'test.jpg' }, { picture: 'test2.jpg' }]
   );
@@ -33,8 +33,8 @@ describe('Module validations', () => {
     test('it should return an empty array for "data" if no value provided', () => {
       expect(
         buildResponse(
-          httpOK,
-          resOpSuccess,
+          httpResponse.OK,
+          operationResult.success,
           'Suggestions retrieved successfully'
         ).data
       ).toStrictEqual([]);

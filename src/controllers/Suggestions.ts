@@ -16,12 +16,8 @@ import {
 } from '../vars/messages';
 
 import {
-  httpOK,
-  httpBadRequest,
-  httpNotFound,
-  httpServerError,
-  resOpSuccess,
-  resOpFailure,
+  httpResponse,
+  operationResult,
   categorySources
 } from '../vars/constants';
 import buildResponse from '../utils/response';
@@ -38,8 +34,8 @@ const validateQueryParams = (req: Request) => {
   // query param validations: category
   if (!category)
     throw buildResponse(
-      httpBadRequest,
-      resOpFailure,
+      httpResponse.badRequest,
+      operationResult.fail,
       fillInStrTemplate(msgQueryParamMissing, [
         { param: 'paramName', value: 'category' }
       ])
@@ -48,8 +44,8 @@ const validateQueryParams = (req: Request) => {
   // query param validations: amount
   if (!amount)
     throw buildResponse(
-      httpBadRequest,
-      resOpFailure,
+      httpResponse.badRequest,
+      operationResult.fail,
       fillInStrTemplate(msgQueryParamMissing, [
         { param: 'paramName', value: 'amount' }
       ])
@@ -57,8 +53,8 @@ const validateQueryParams = (req: Request) => {
 
   if (!isPositiveInt(amount))
     throw buildResponse(
-      httpBadRequest,
-      resOpFailure,
+      httpResponse.badRequest,
+      operationResult.fail,
       fillInStrTemplate(msgQueryParamWrongFormat, [
         { param: 'paramName', value: 'amount' }
       ])
@@ -81,7 +77,11 @@ const controller = {
       );
 
       if (categoryDB.rowCount === 0)
-        throw buildResponse(httpBadRequest, resOpFailure, msgCatNotFound);
+        throw buildResponse(
+          httpResponse.badRequest,
+          operationResult.fail,
+          msgCatNotFound
+        );
 
       const categoryDBRow = categoryDB.rows[0];
 
@@ -120,10 +120,10 @@ const controller = {
             suggestions = suggestionList.getSuggestions();
           }
 
-          res.status(httpOK).json(
+          res.status(httpResponse.OK).json(
             buildResponse(
-              httpOK,
-              resOpSuccess,
+              httpResponse.OK,
+              operationResult.success,
               fillInStrTemplate(msgSuggestionsFetched, [
                 {
                   param: 'amount',
@@ -140,29 +140,33 @@ const controller = {
           break;
         case categorySources.API:
           res
-            .status(httpServerError)
+            .status(httpResponse.serverError)
             .json(
               buildResponse(
-                httpNotFound,
-                resOpSuccess,
+                httpResponse.notFound,
+                operationResult.success,
                 msgCatSrcNotImplemented,
                 []
               )
             );
           break;
         default:
-          throw buildResponse(httpBadRequest, resOpFailure, msgCatSrcInvalid);
+          throw buildResponse(
+            httpResponse.badRequest,
+            operationResult.fail,
+            msgCatSrcInvalid
+          );
       }
     } catch (e) {
       console.error(Error(e.message));
       if (e.status) res.status(e.status).json(e);
       else {
         res
-          .status(httpServerError)
+          .status(httpResponse.serverError)
           .json(
             buildResponse(
-              httpServerError,
-              resOpFailure,
+              httpResponse.serverError,
+              operationResult.fail,
               msgServerError,
               e.message
             )
