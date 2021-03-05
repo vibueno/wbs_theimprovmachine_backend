@@ -40,7 +40,6 @@ const validateQueryParams = (req: Request) => {
     throw buildResponse(
       httpBadRequest,
       resOpFailure,
-      //TODO: create interface
       fillInStrTemplate(msgQueryParamMissing, [
         { param: 'paramName', value: 'category' }
       ])
@@ -50,7 +49,6 @@ const validateQueryParams = (req: Request) => {
     throw buildResponse(
       httpBadRequest,
       resOpFailure,
-      //TODO: create interface
       fillInStrTemplate(msgQueryParamWrongFormat, [
         { param: 'paramName', value: 'category' }
       ])
@@ -61,7 +59,6 @@ const validateQueryParams = (req: Request) => {
     throw buildResponse(
       httpBadRequest,
       resOpFailure,
-      //TODO: create interface
       fillInStrTemplate(msgQueryParamMissing, [
         { param: 'paramName', value: 'amount' }
       ])
@@ -71,7 +68,6 @@ const validateQueryParams = (req: Request) => {
     throw buildResponse(
       httpBadRequest,
       resOpFailure,
-      //TODO: create interface
       fillInStrTemplate(msgQueryParamWrongFormat, [
         { param: 'paramName', value: 'amount' }
       ])
@@ -98,7 +94,6 @@ const controller = {
 
       const categoryDBRow = categoryDB.rows[0];
 
-      //TODO: create interface
       const category = new SuggestionCategory(
         categoryDBRow.id,
         categoryDBRow.title,

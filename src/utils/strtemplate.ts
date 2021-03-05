@@ -1,6 +1,8 @@
 import { msgTemplateInvalid, msgTemplateArgs } from '../vars/messages';
 import { TemplateInvalidError, TemplateParamsError } from '../utils/error';
 
+import StringTemplateParams from '../types/StringTemplateParams';
+
 const strTemplateHasParams = (strTemplate: string) => {
   if ((strTemplate.match(/\$\{.*\}/g) || []).length > 0) {
     return true;
@@ -21,7 +23,7 @@ const strTemplateHasParams = (strTemplate: string) => {
 const fillInStrTemplate = (
   strTemplate: string,
   //TODO: create interface
-  strData: { param: string; value: string }[]
+  strData: StringTemplateParams[]
 ): string => {
   if (!strTemplateHasParams(strTemplate))
     throw new TemplateInvalidError(msgTemplateInvalid);
