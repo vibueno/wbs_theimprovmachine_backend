@@ -23,8 +23,9 @@ VALUES
 (4, 'API','image', 'randomimage2', 'Random images from Unsplash', 'https://api.unsplash.com/photos/random?client_id=${key}',
   '{"url": ["$..urls.regular"],
   "description": ["$..description", "$..alt_description"],
+  "imagepage": ["$..links.html"],
   "authorname": ["$..user.name"],
-  "authorpage": ["$..user.links.html","$..user.portfolio_url"]}',
+  "authorpage": ["$..user.links.html"]}',
   'U2FsdGVkX18zcbkSp4673FIWLTRnPbmbvjwZk5EL5jXPOcsFx5EGfQ8rpnmnAPFESxLITyxSDrlt7pE71aNauQ==');
 
 DROP TABLE IF EXISTS suggestion;

@@ -1,4 +1,4 @@
-import { isPositiveInt } from '../validations';
+import { isPositiveInt, isNotNullNorUndefined } from '../validations';
 
 describe('Module validation', () => {
   describe('Function isPositiveInt', () => {
@@ -16,6 +16,20 @@ describe('Module validation', () => {
 
     test('it should return false for a string', () => {
       expect(isPositiveInt('test')).toBe(false);
+    });
+  });
+
+  describe('Function isNotNullNorUndefined', () => {
+    test('it should return false for a null value', () => {
+      expect(isNotNullNorUndefined(null as any)).toBe(false);
+    });
+
+    test('it should return false for an undefinied value', () => {
+      expect(isNotNullNorUndefined(undefined as any)).toBe(false);
+    });
+
+    test('it should return true for a defined value', () => {
+      expect(isNotNullNorUndefined('-5')).toBe(true);
     });
   });
 });

@@ -4,12 +4,26 @@ import { httpResponse, operationResult } from '../../vars/constants';
 import SuggestionCategory from '../../models/SuggestionCategory';
 import Suggestion from '../../models/Suggestion';
 
+import ResponseSuggestions from '../../types/ResponseSuggestion';
+import ResponseData from '../../types/ResponseData';
+
 describe('Module validations', () => {
+  const responseSuggestions: ResponseSuggestions[] = [
+    { picture: 'test.jpg' },
+    { picture: 'test2.jpg' }
+  ];
+
+  const responseData: ResponseData = {
+    category: 'ramdomimages',
+    contenttype: 'image',
+    suggestions: responseSuggestions
+  };
+
   const response = buildResponse(
     httpResponse.OK,
     operationResult.success,
-    'Suggestions retrieved successfully',
-    [{ picture: 'test.jpg' }, { picture: 'test2.jpg' }]
+    'Successfully retrieved 2 test images',
+    responseData
   );
 
   describe('Function buildResponse', () => {
@@ -33,14 +47,14 @@ describe('Module validations', () => {
       expect(response.data).toBeDefined();
     });
 
-    test('it should return an empty object for "data" if no value provided', () => {
+    test('it should return null for "data" if no value provided', () => {
       expect(
         buildResponse(
           httpResponse.OK,
           operationResult.success,
           'Suggestions retrieved successfully'
         ).data
-      ).toStrictEqual({});
+      ).toBeNull;
     });
   });
 
@@ -50,7 +64,9 @@ describe('Module validations', () => {
       'testcategory',
       'image',
       'DB',
-      'http//test.com'
+      'http//test.com',
+      null as any,
+      null as any
     );
 
     const suggestions: Suggestion[] = [];
