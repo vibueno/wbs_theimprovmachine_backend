@@ -6,6 +6,7 @@ https://stackify.com/static-factory-methods/
 
 import pool from '../utils/db';
 import { QueryConfig, QueryResult } from 'pg';
+import * as jsonPath from 'jsonpath';
 
 import Suggestion from '../models/Suggestion';
 import SuggestionCategory from '../models/SuggestionCategory';
@@ -14,6 +15,10 @@ import { fillInStrTemplate } from '../utils/strtemplate';
 import { randomString } from '../utils/random';
 import { apiRequest } from '../utils/api';
 import { decrypt } from '../utils/encryption';
+import { isNotNullNorUndefined } from '../utils/validations';
+
+import JsonPaths from '../types/JsonPaths';
+import ResponseSuggestion from '../types/ResponseSuggestion';
 
 class SuggestionList {
   /**
@@ -82,10 +87,10 @@ class SuggestionList {
 
   /**
    * Builds a suggestions array from a QueyResult
+   * @param {SuggestionCategory}  category - category of the suggestions
    * @param {QueryResult} suggestionsDB - suggestions from DB
-   * @param {number}  amount - amount of suggestion to be generated
    *
-   * @return {Suggestion[]} processed suggestions
+   * @return {SuggestionList} processed suggestion list
    */
   public static createFromDBSuggestions(
     category: SuggestionCategory,
@@ -100,10 +105,10 @@ class SuggestionList {
 
   /**
    * Builds a suggestions array using a random seed (used for Lorem Picsum)
-   * @param {string}  basepath - URL to be completed with a seed
+   * @param {SuggestionCategory}  category - category of the suggestions
    * @param {number}  amount - amount of suggestion to be generated
    *
-   * @return {Suggestion[]} processed suggestions
+   * @return {SuggestionList} processed suggestion list
    */
   public static createFromSeed(
     category: SuggestionCategory,
@@ -113,7 +118,6 @@ class SuggestionList {
 
     for (let i = 1; i <= amount; i++) {
       let url = fillInStrTemplate(category.getBasePath(), [
-        //TODO: create interface
         {
           param: 'seed',
           value: randomString(7)
@@ -121,6 +125,43 @@ class SuggestionList {
       ]);
       suggestions.push(new Suggestion({ url: url }));
     }
+    return new this(category, suggestions);
+  }
+
+  /**
+   * Builds a suggestions array from an API response
+   * @param {SuggestionCategory}  category - category of the suggestions
+   *
+   * @return {SuggestionList} processed suggestions
+   */
+  public static createFromAPIresponse(
+    category: SuggestionCategory,
+    suggestionsAPI: string[]
+  ): SuggestionList {
+    let suggestions: Suggestion[] = [];
+
+    const jsonpaths: JsonPaths = category.getJsonPaths();
+    let suggestion: ResponseSuggestion = {};
+
+    suggestionsAPI.forEach(suggestionAPI => {
+      suggestion = {};
+
+      Object.keys(jsonpaths).forEach(jsonpath => {
+        if (jsonpaths[jsonpath].length > 1) {
+          const values = jsonpaths[jsonpath].map(
+            pathItem => jsonPath.query(suggestionAPI, pathItem)[0]
+          );
+          const value = values.find(value => isNotNullNorUndefined(value));
+          suggestion[jsonpath] = value;
+        } else
+          suggestion[jsonpath] = jsonPath.query(
+            suggestionAPI,
+            jsonpaths[jsonpath][0]
+          )[0];
+      });
+      suggestions.push(new Suggestion(suggestion));
+    });
+
     return new this(category, suggestions);
   }
 

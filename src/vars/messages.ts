@@ -13,9 +13,6 @@ const msgSuggestionsFetched =
 
 const msgCatNotFound = 'The requested suggestion category does not exist';
 
-const msgCatSrcNotImplemented =
-  'The requested suggestion category makes use of external APIs. This functionality has not been implemented yet';
-
 const msgCatSrcInvalid =
   'The requested suggestion category source does not exist';
 
@@ -25,7 +22,7 @@ const msgTemplateArgs = 'The arguments passed do not seem to be valid';
 
 // API calls
 const msgAPIError =
-  'There was an error accessing the API needed for the selected suggestion category.';
+  'There was an error accessing the API needed for the selected suggestion category: ${error}.';
 export {
   msgServerStarted,
   msgServerError,
@@ -34,7 +31,6 @@ export {
   msgQueryParamWrongFormat,
   msgSuggestionsFetched,
   msgCatNotFound,
-  msgCatSrcNotImplemented,
   msgCatSrcInvalid,
   msgTemplateInvalid,
   msgTemplateArgs,

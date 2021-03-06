@@ -3,4 +3,8 @@ const isPositiveInt = (val: string) => {
   return re.test(val);
 };
 
-export { isPositiveInt };
+const isNotNullNorUndefined = function (val: string) {
+  return typeof val !== 'undefined' && val !== null;
+};
+
+export { isPositiveInt, isNotNullNorUndefined };

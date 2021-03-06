@@ -9,7 +9,6 @@ import {
   msgQueryParamMissing,
   msgQueryParamWrongFormat,
   msgServerError,
-  msgCatSrcNotImplemented,
   msgCatSrcInvalid,
   msgCatNotFound,
   msgSuggestionsFetched
@@ -91,6 +90,7 @@ const controller = {
         categoryDBRow.contenttype,
         categoryDBRow.sourcetype,
         categoryDBRow.basepath,
+        categoryDBRow.jsonpaths,
         categoryDBRow.key
       );
 
@@ -145,17 +145,28 @@ const controller = {
             req.body.amount
           );
 
-          console.log(suggestionsAPI);
+          const suggestionList = SuggestionList.createFromAPIresponse(
+            category,
+            suggestionsAPI
+          );
 
-          res
-            .status(httpResponse.serverError)
-            .json(
-              buildResponse(
-                httpResponse.notFound,
-                operationResult.success,
-                msgCatSrcNotImplemented
-              )
-            );
+          res.status(httpResponse.OK).json(
+            buildResponse(
+              httpResponse.OK,
+              operationResult.success,
+              fillInStrTemplate(msgSuggestionsFetched, [
+                {
+                  param: 'amount',
+                  value: req.body.amount
+                },
+                {
+                  param: 'suggestionCategoryTitle',
+                  value: category.getTitle()
+                }
+              ]),
+              buildResponseData(category, suggestionList.getSuggestions())
+            )
+          );
           break;
         default:
           throw buildResponse(

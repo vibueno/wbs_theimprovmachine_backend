@@ -1,11 +1,13 @@
-class Suggestion {
-  private content: object;
+import ResponseSuggestion from '../types/ResponseSuggestion';
 
-  constructor(content: object) {
+class Suggestion {
+  private content: ResponseSuggestion;
+
+  constructor(content: ResponseSuggestion) {
     this.content = content;
   }
 
-  getContent = (): object => this.content;
+  getContent = (): ResponseSuggestion => this.content;
 }
 
 export default Suggestion;
