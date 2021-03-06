@@ -11,8 +11,7 @@ import * as jsonPath from 'jsonpath';
 import Suggestion from '../models/Suggestion';
 import SuggestionCategory from '../models/SuggestionCategory';
 
-import { fillInStrTemplate } from '../utils/strtemplate';
-import { randomString } from '../utils/random';
+import { fillInStrTemplate, strTemplateHasParams } from '../utils/strtemplate';
 import { apiRequest } from '../utils/api';
 import { decrypt } from '../utils/encryption';
 import { isNotNullNorUndefined } from '../utils/validations';
@@ -71,18 +70,23 @@ class SuggestionList {
   ): Promise<string[]> => {
     const requests: Promise<string>[] = [];
 
+    const basePath = category.getBasePath();
+    const basePathHasKey = strTemplateHasParams(basePath);
+
+    let request;
+
     for (let i = 1; i <= amount; i++)
-      requests.push(
-        await apiRequest(
+      if (basePathHasKey)
+        request = await apiRequest(
           fillInStrTemplate(category.getBasePath(), [
             { param: 'key', value: decrypt(category.getKey()) }
           ])
-        )
-      );
+        );
+      else request = await apiRequest(basePath);
 
-    const responses = await Promise.all(requests);
+    requests.push(request);
 
-    return responses;
+    return await Promise.all(requests);
   };
 
   /**
@@ -100,31 +104,6 @@ class SuggestionList {
     suggestionsDB.rows.forEach(suggestion => {
       suggestions.push(new Suggestion(suggestion.content));
     });
-    return new this(category, suggestions);
-  }
-
-  /**
-   * Builds a suggestions array using a random seed (used for Lorem Picsum)
-   * @param {SuggestionCategory}  category - category of the suggestions
-   * @param {number}  amount - amount of suggestion to be generated
-   *
-   * @return {SuggestionList} processed suggestion list
-   */
-  public static createFromSeed(
-    category: SuggestionCategory,
-    amount: number
-  ): SuggestionList {
-    const suggestions: Suggestion[] = [];
-
-    for (let i = 1; i <= amount; i++) {
-      let url = fillInStrTemplate(category.getBasePath(), [
-        {
-          param: 'seed',
-          value: randomString(7)
-        }
-      ]);
-      suggestions.push(new Suggestion({ url: url }));
-    }
     return new this(category, suggestions);
   }
 

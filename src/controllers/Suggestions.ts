@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 
-import Suggestion from '../models/Suggestion';
 import SuggestionList from '../models/SuggestionList';
 import SuggestionCategory from '../models/SuggestionCategory';
-import { strTemplateHasParams, fillInStrTemplate } from '../utils/strtemplate';
+import { fillInStrTemplate } from '../utils/strtemplate';
 
 import {
   msgQueryParamMissing,
@@ -112,25 +111,10 @@ const controller = {
             req.body.amount
           );
 
-          let suggestions: Suggestion[] = [];
-
-          const basepath = category.getBasePath();
-
-          if (basepath) {
-            if (strTemplateHasParams(basepath)) {
-              const suggestionList = SuggestionList.createFromSeed(
-                category,
-                req.body.amount
-              );
-              suggestions = suggestionList.getSuggestions();
-            }
-          } else {
-            const suggestionList = SuggestionList.createFromDBSuggestions(
-              category,
-              suggestionsDB
-            );
-            suggestions = suggestionList.getSuggestions();
-          }
+          let suggestions = SuggestionList.createFromDBSuggestions(
+            category,
+            suggestionsDB
+          ).getSuggestions();
 
           res.status(httpResponse.OK).json(
             buildResponse(
@@ -149,6 +133,7 @@ const controller = {
               buildResponseData(category, suggestions)
             )
           );
+
           break;
         case categorySources.API:
           const suggestionsAPI = await SuggestionList.getAPISuggestions(
