@@ -15,4 +15,11 @@ enum categorySources {
   API = 'API'
 }
 
-export { httpResponse, operationResult, categorySources };
+const maxSuggestionsPerRequest = 10;
+
+export {
+  httpResponse,
+  operationResult,
+  categorySources,
+  maxSuggestionsPerRequest
+};

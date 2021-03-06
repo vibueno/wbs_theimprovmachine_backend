@@ -8,6 +8,7 @@ import { strTemplateHasParams, fillInStrTemplate } from '../utils/strtemplate';
 import {
   msgQueryParamMissing,
   msgQueryParamWrongFormat,
+  msgQueryParamMaxAmount,
   msgServerError,
   msgCatSrcInvalid,
   msgCatNotFound,
@@ -17,7 +18,8 @@ import {
 import {
   httpResponse,
   operationResult,
-  categorySources
+  categorySources,
+  maxSuggestionsPerRequest
 } from '../vars/constants';
 import { buildResponse, buildResponseData } from '../utils/response';
 
@@ -56,6 +58,15 @@ const validateQueryParams = (req: Request) => {
       operationResult.fail,
       fillInStrTemplate(msgQueryParamWrongFormat, [
         { param: 'paramName', value: 'amount' }
+      ])
+    );
+
+  if (amount > maxSuggestionsPerRequest)
+    throw buildResponse(
+      httpResponse.badRequest,
+      operationResult.fail,
+      fillInStrTemplate(msgQueryParamMaxAmount, [
+        { param: 'maxAmount', value: maxSuggestionsPerRequest.toString() }
       ])
     );
 };
