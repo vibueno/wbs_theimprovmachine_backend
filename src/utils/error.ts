@@ -12,4 +12,11 @@ class TemplateInvalidError extends Error {
   }
 }
 
-export { TemplateParamsError, TemplateInvalidError };
+class APIAccessError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'APIAccessError';
+  }
+}
+
+export { TemplateParamsError, TemplateInvalidError, APIAccessError };

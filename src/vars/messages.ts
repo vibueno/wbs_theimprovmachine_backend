@@ -23,6 +23,9 @@ const msgCatSrcInvalid =
 const msgTemplateInvalid = 'The string provided does not seem to be a template';
 const msgTemplateArgs = 'The arguments passed do not seem to be valid';
 
+// API calls
+const msgAPIError =
+  'There was an error accessing the API needed for the selected suggestion category.';
 export {
   msgServerStarted,
   msgServerError,
@@ -34,5 +37,6 @@ export {
   msgCatSrcNotImplemented,
   msgCatSrcInvalid,
   msgTemplateInvalid,
-  msgTemplateArgs
+  msgTemplateArgs,
+  msgAPIError
 };

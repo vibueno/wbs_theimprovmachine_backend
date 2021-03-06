@@ -10,15 +10,16 @@ CREATE TABLE suggestioncategory (
   sourcetype sourcetype NOT NULL,
   title VARCHAR(20) UNIQUE NOT NULL,
   description VARCHAR(50) NOT NULL,
-  basepath VARCHAR(100)
+  basepath VARCHAR(100),
+  key VARCHAR(100)
 );
 
-INSERT INTO suggestioncategory (id, sourcetype, contenttype, title, description, basepath)
+INSERT INTO suggestioncategory (id, sourcetype, contenttype, title, description, basepath, key)
 VALUES
-(1, 'DB', 'image', 'object', 'Object pictures from THINGS', null),
-(2, 'DB', 'text', 'sms', 'The National University of Singapore SMS Corpus', null),
-(3, 'DB', 'image', 'randomimage', 'Random images from Lorem Picsum', 'https://picsum.photos/seed/${seed}/1280/720'),
-(4, 'API','image', 'randomimage2', 'Random images from Unsplash', null);
+(1, 'DB', 'image', 'object', 'Object pictures from THINGS', null, null),
+(2, 'DB', 'text', 'sms', 'The National University of Singapore SMS Corpus', null, null),
+(3, 'DB', 'image', 'randomimage', 'Random images from Lorem Picsum', 'https://picsum.photos/seed/${seed}/1280/720', null),
+(4, 'API','image', 'randomimage2', 'Random images from Unsplash', 'https://api.unsplash.com/photos/random?client_id=${key}', 'U2FsdGVkX18zcbkSp4673FIWLTRnPbmbvjwZk5EL5jXPOcsFx5EGfQ8rpnmnAPFESxLITyxSDrlt7pE71aNauQ==');
 
 DROP TABLE IF EXISTS suggestion;
 CREATE TABLE suggestion (

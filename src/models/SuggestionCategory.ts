@@ -8,12 +8,13 @@ class SuggestionCategory {
   private contenttype: string;
   private sourcetype: string;
   private basepath: string;
+  private key: string;
 
   public static getDBCategory = async (
     categoryTitle: string
   ): Promise<QueryResult> => {
     const sqlQuery = `
-    SELECT sc.id, sc.title, sc.contenttype, sc.sourcetype, sc.basepath
+    SELECT sc.id, sc.title, sc.contenttype, sc.sourcetype, sc.basepath, sc.key
     FROM suggestioncategory sc
     WHERE sc.title = $1`;
 
@@ -33,13 +34,15 @@ class SuggestionCategory {
     title: string,
     contenttype: string,
     sourcetype: string,
-    basepath: string
+    basepath: string,
+    key: string
   ) {
     this.id = id;
     this.title = title;
     this.contenttype = contenttype;
     this.sourcetype = sourcetype;
     this.basepath = basepath;
+    this.key = key;
   }
 
   public getId = (): number => {
@@ -54,8 +57,15 @@ class SuggestionCategory {
     return this.sourcetype;
   };
 
+  public getContentType = (): string => {
+    return this.contenttype;
+  };
+
   public getBasePath = (): string => {
     return this.basepath;
+  };
+  public getKey = (): string => {
+    return this.key;
   };
 }
 

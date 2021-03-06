@@ -90,7 +90,8 @@ const controller = {
         categoryDBRow.title,
         categoryDBRow.contenttype,
         categoryDBRow.sourcetype,
-        categoryDBRow.basepath
+        categoryDBRow.basepath,
+        categoryDBRow.key
       );
 
       switch (category.getSourceType()) {
@@ -139,6 +140,13 @@ const controller = {
           );
           break;
         case categorySources.API:
+          const suggestionsAPI = await SuggestionList.getAPISuggestions(
+            category,
+            req.body.amount
+          );
+
+          console.log(suggestionsAPI);
+
           res
             .status(httpResponse.serverError)
             .json(

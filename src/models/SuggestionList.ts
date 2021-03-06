@@ -6,11 +6,14 @@ https://stackify.com/static-factory-methods/
 
 import pool from '../utils/db';
 import { QueryConfig, QueryResult } from 'pg';
+
 import Suggestion from '../models/Suggestion';
 import SuggestionCategory from '../models/SuggestionCategory';
 
 import { fillInStrTemplate } from '../utils/strtemplate';
 import { randomString } from '../utils/random';
+import { apiRequest } from '../utils/api';
+import { decrypt } from '../utils/encryption';
 
 class SuggestionList {
   /**
@@ -44,9 +47,7 @@ class SuggestionList {
     };
     const suggestions: QueryResult = await pool.query(query);
 
-    return new Promise<QueryResult>(resolve => {
-      resolve(suggestions);
-    });
+    return suggestions;
   };
 
   /**
@@ -56,14 +57,27 @@ class SuggestionList {
    * @param   {number} category - suggestion category from which we want to get suggestions.
    * @param   {number} amount - amount of suggestions we want to get.
    *
-   * @return  Promise<string>
+   * @return  Promise<string>[]
    */
 
   public static getAPISuggestions = async (
-    category: number,
+    category: SuggestionCategory,
     amount: number
-  ): Promise<string> => {
-    return 'test';
+  ): Promise<string[]> => {
+    const requests: Promise<string>[] = [];
+
+    for (let i = 1; i <= amount; i++)
+      requests.push(
+        await apiRequest(
+          fillInStrTemplate(category.getBasePath(), [
+            { param: 'key', value: decrypt(category.getKey()) }
+          ])
+        )
+      );
+
+    const responses = await Promise.all(requests);
+
+    return responses;
   };
 
   /**

@@ -27,6 +27,7 @@ const buildResponseData = (
 
   return {
     category: category.getTitle(),
+    contenttype: category.getContentType(),
     suggestions: suggestionsContent
   };
 };
