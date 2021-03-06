@@ -110,3 +110,7 @@ build
 
 # temporary files
 *~
+
+# DB data
+
+sql/data

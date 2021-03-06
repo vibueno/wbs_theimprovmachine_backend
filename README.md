@@ -27,4 +27,4 @@ For checking the frontend, go to the corresponding [Github repo](https://github.
 
 ## Live
 
-This application will be hosted Heroku.
+This application will be hosted on Heroku.
