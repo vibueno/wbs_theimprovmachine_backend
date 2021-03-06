@@ -27,7 +27,15 @@
 - [Node.js](https://nodejs.org/en)
 - [Express.js](https://expressjs.com)
 
-## Code editor
+### Node Packages
+
+- [axios](https://www.npmjs.com/package/axios)
+- [crypto-ts](https://www.npmjs.com/package/crypto-ts)
+- [dotenv](https://www.npmjs.com/package/dotenv)
+- [jsonpath](https://www.npmjs.com/package/jsonpath)
+- [pg](https://www.npmjs.com/package/pg)
+
+## Code Editor
 
 - [Atom](https://atom.io)
 
