@@ -26,25 +26,25 @@ This way, I can also ensure that, in case I run out of time, I can just leave fe
 
 A static page with some introductory text about what is improv and a brief history of this theatrical art.
 
-### Suggestions
+### Suggestions generator
 
-The main body of the project will be the suggestions generator.
+The main body of the project will be the suggestions generator. A list of possible suggesion categories could be:
 
-**Relationship:** the software offers the user a suggestion of a relationship between characters (father-son, teacher-pupil...)
+- **Relationship:** the software offers the user a suggestion of a relationship between characters (father-son, teacher-pupil...)
 
-**Place:** where the scene will take place (a bar, a cemetery, on a cloud...)
+- **Place:** where the scene will take place (a bar, a cemetery, on a cloud...)
 
-**Object:** some scenes start or are enhanced through suggestions in the form of objects. I have found a picture database of almost 2000 objects, which I am allowed to use: [THINGS](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0223792).
+- **Object:** some scenes start or are enhanced through suggestions in the form of objects. I have found a picture database of almost 2000 objects, which I am allowed to use: [THINGS](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0223792).
 
-**Body posture:** other scenes start with body postures of the actors. I have been looking for a database of pictures of human postures, but I haven't found anything good enough, so I will be taking the pictures myself.
+- **Body posture:** other scenes start with body postures of the actors. I have been looking for a database of pictures of human postures, but I haven't found anything good enough, so I will be taking the pictures myself.
 
-**Keywords:** just one or more words which will be used to inspire the scene
+- **Keywords:** just one or more words which will be used to inspire the scene
 
-**Sentence:** a sentence can be used in different ways: it can be the title of the scene, the starting sentence, the final sentence...
+- **Sentence:** a sentence can be used in different ways: it can be the title of the scene, the starting sentence, the final sentence...
 
-**Book paragraph:** based on a excerpt of a book, the actors create a new scene.
+- **Book paragraph:** based on a excerpt of a book, the actors create a new scene.
 
-**Languages:** the scene will be played in the language proposed by the software.
+- **Languages:** the scene will be played in the language proposed by the software.
 
 In order to get all this information, I will be consulting different API's, databases and picture collections.
 
