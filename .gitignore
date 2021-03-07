@@ -110,6 +110,7 @@ build
 
 # temporary files
 *~
+*.autosave
 
 # DB data
 

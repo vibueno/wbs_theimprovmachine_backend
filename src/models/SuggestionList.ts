@@ -21,7 +21,7 @@ import ResponseSuggestion from '../types/ResponseSuggestion';
 
 class SuggestionList {
   /**
-   * Retrieves a specified amount of suggestions from the specified category from the DB.
+   * Retrieves an amount of suggestions from a specified category from the DB.
    * @async
    * @static
    * @param   {number} category - suggestion category from which we want to get suggestions.
@@ -33,7 +33,7 @@ class SuggestionList {
   private category: SuggestionCategory;
   private suggestions: Suggestion[];
 
-  public static getDBSuggestions = async (
+  private static getDBSuggestions = async (
     category: number,
     amount: number
   ): Promise<QueryResult> => {
@@ -55,7 +55,7 @@ class SuggestionList {
   };
 
   /**
-   * Retrieves a specified amount of suggestions from the specified category from an API.
+   * Retrieves an amount of suggestions from a specified category from an API.
    * @async
    * @static
    * @param   {number} category - suggestion category from which we want to get suggestions.
@@ -64,7 +64,7 @@ class SuggestionList {
    * @return  Promise<string>[]
    */
 
-  public static getAPISuggestions = async (
+  private static getAPISuggestions = async (
     category: SuggestionCategory,
     amount: number
   ): Promise<string[]> => {
@@ -90,16 +90,21 @@ class SuggestionList {
   };
 
   /**
-   * Builds a suggestions array from a QueyResult
-   * @param {SuggestionCategory}  category - category of the suggestions
-   * @param {QueryResult} suggestionsDB - suggestions from DB
+   * Creates a suggestiosList from the DB.
+   * @param  {SuggestionCategory}  category - category of the suggestions.
+   * @param  {number} amount - amount of suggestions to get.
    *
-   * @return {SuggestionList} processed suggestion list
+   * @return Promise<SuggestionList> promise of the suggestion list from DB.
    */
-  public static createFromDBSuggestions(
+  public static async createFromDB(
     category: SuggestionCategory,
-    suggestionsDB: QueryResult
-  ): SuggestionList {
+    amount: number
+  ): Promise<SuggestionList> {
+    const suggestionsDB = await SuggestionList.getDBSuggestions(
+      category.getId(),
+      amount
+    );
+
     const suggestions: Suggestion[] = [];
     suggestionsDB.rows.forEach(suggestion => {
       suggestions.push(new Suggestion(suggestion.content));
@@ -108,15 +113,21 @@ class SuggestionList {
   }
 
   /**
-   * Builds a suggestions array from an API response
-   * @param {SuggestionCategory}  category - category of the suggestions
+   * Creates a suggestiosList from an API.
+   * @param  {SuggestionCategory}  category - category of the suggestions.
+   * @param  {number} amount - amount of suggestions to get.
    *
-   * @return {SuggestionList} processed suggestions
+   * @return Promise<SuggestionList> promise of the suggestion list from API.
    */
-  public static createFromAPIresponse(
+  public static async createFromAPI(
     category: SuggestionCategory,
-    suggestionsAPI: string[]
-  ): SuggestionList {
+    amount: number
+  ): Promise<SuggestionList> {
+    const suggestionsAPI = await SuggestionList.getAPISuggestions(
+      category,
+      amount
+    );
+
     let suggestions: Suggestion[] = [];
 
     const jsonpaths: JsonPaths = category.getJsonPaths();

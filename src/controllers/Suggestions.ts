@@ -72,9 +72,9 @@ const validateQueryParams = (req: Request) => {
 
 const controller = {
   /**
-   * sends back a determined amount of suggestions of a specified category.
+   * Sends back the defined amount of suggestions from the specified category.
    * @async
-   * @param {Request}   req - request object. Expects query params category:number and amount:number
+   * @param {Request}   req - request object. Expects query params category:number and amount:number.
    * @param {Response}  res - response object.
    */
   get: async (req: Request, res: Response) => {
@@ -104,65 +104,22 @@ const controller = {
         categoryDBRow.key
       );
 
+      let suggestionList;
+
       switch (category.getSourceType()) {
         case categorySources.DB:
-          const suggestionsDB = await SuggestionList.getDBSuggestions(
-            category.getId(),
-            req.body.amount
-          );
-
-          let suggestions = SuggestionList.createFromDBSuggestions(
+          suggestionList = await SuggestionList.createFromDB(
             category,
-            suggestionsDB
-          ).getSuggestions();
-
-          res.status(httpResponse.OK).json(
-            buildResponse(
-              httpResponse.OK,
-              operationResult.success,
-              fillInStrTemplate(msgSuggestionsFetched, [
-                {
-                  param: 'amount',
-                  value: req.body.amount
-                },
-                {
-                  param: 'suggestionCategoryTitle',
-                  value: category.getTitle()
-                }
-              ]),
-              buildResponseData(category, suggestions)
-            )
+            req.body.amount
           );
 
           break;
         case categorySources.API:
-          const suggestionsAPI = await SuggestionList.getAPISuggestions(
+          suggestionList = await SuggestionList.createFromAPI(
             category,
             req.body.amount
           );
 
-          const suggestionList = SuggestionList.createFromAPIresponse(
-            category,
-            suggestionsAPI
-          );
-
-          res.status(httpResponse.OK).json(
-            buildResponse(
-              httpResponse.OK,
-              operationResult.success,
-              fillInStrTemplate(msgSuggestionsFetched, [
-                {
-                  param: 'amount',
-                  value: req.body.amount
-                },
-                {
-                  param: 'suggestionCategoryTitle',
-                  value: category.getTitle()
-                }
-              ]),
-              buildResponseData(category, suggestionList.getSuggestions())
-            )
-          );
           break;
         default:
           throw buildResponse(
@@ -171,6 +128,24 @@ const controller = {
             msgCatSrcInvalid
           );
       }
+
+      res.status(httpResponse.OK).json(
+        buildResponse(
+          httpResponse.OK,
+          operationResult.success,
+          fillInStrTemplate(msgSuggestionsFetched, [
+            {
+              param: 'amount',
+              value: req.body.amount
+            },
+            {
+              param: 'suggestionCategoryTitle',
+              value: category.getTitle()
+            }
+          ]),
+          buildResponseData(category, suggestionList.getSuggestions())
+        )
+      );
     } catch (e) {
       console.error(Error(e.message));
       if (e.status) res.status(e.status).json(e);
