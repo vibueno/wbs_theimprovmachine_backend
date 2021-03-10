@@ -1,11 +1,11 @@
-import { buildResponse, buildResponseData } from '../response';
+import { buildResponse, buildSuggestionResponseData } from '../response';
 import { httpResponse, operationResult } from '../../vars/constants';
 
 import SuggestionCategory from '../../models/SuggestionCategory';
 import Suggestion from '../../models/Suggestion';
 
 import ResponseSuggestions from '../../types/ResponseSuggestion';
-import ResponseData from '../../types/ResponseData';
+import ResponseData from '../../types/ResponseSuggestionData';
 
 describe('Module validations', () => {
   const responseSuggestions: ResponseSuggestions[] = [
@@ -61,7 +61,8 @@ describe('Module validations', () => {
   describe('Function buildResponseData', () => {
     const suggestionCategory = new SuggestionCategory(
       1,
-      'testcategory',
+      'testcategorytitle',
+      'testcategorydescription',
       'image',
       'DB',
       'http//test.com',
@@ -74,7 +75,10 @@ describe('Module validations', () => {
     suggestions.push(new Suggestion({ title: 'testtitle' }));
     suggestions.push(new Suggestion({ title: 'testtitle2' }));
 
-    const response = buildResponseData(suggestionCategory, suggestions);
+    const response = buildSuggestionResponseData(
+      suggestionCategory,
+      suggestions
+    );
 
     test('it should return an object of type ResponseData', () => {
       expect(response.category).toBeDefined();

@@ -22,6 +22,9 @@ const msgCatNotFound = 'The requested suggestion category does not exist';
 const msgCatSrcInvalid =
   'The requested suggestion category source does not exist';
 
+const msgSuggestionCategoriesFetched =
+  'Successfully fetched ${amount} suggestion categories';
+
 // External API requests
 const msgAPIError =
   'There was an error accessing the API needed for the selected suggestion category: ${error}.';
@@ -38,5 +41,6 @@ export {
   msgSuggestionsFetched,
   msgCatNotFound,
   msgCatSrcInvalid,
+  msgSuggestionCategoriesFetched,
   msgAPIError
 };

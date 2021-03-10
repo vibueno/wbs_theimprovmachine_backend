@@ -20,7 +20,7 @@ import {
   categorySources,
   maxSuggestionsPerRequest
 } from '../vars/constants';
-import { buildResponse, buildResponseData } from '../utils/response';
+import { buildResponse, buildSuggestionResponseData } from '../utils/response';
 
 import { isPositiveInt } from '../utils/validations';
 
@@ -97,6 +97,7 @@ const controller = {
       const category = new SuggestionCategory(
         categoryDBRow.id,
         categoryDBRow.title,
+        categoryDBRow.description,
         categoryDBRow.contenttype,
         categoryDBRow.sourcetype,
         categoryDBRow.basepath,
@@ -143,7 +144,7 @@ const controller = {
               value: category.getTitle()
             }
           ]),
-          buildResponseData(category, suggestionList.getSuggestions())
+          buildSuggestionResponseData(category, suggestionList.getSuggestions())
         )
       );
     } catch (e) {

@@ -1,9 +1,8 @@
-import ResponseData from './ResponseData';
 type Response = {
   status: number;
   operation: string;
   message: string;
-  data: ResponseData;
+  data: any;
 };
 
 export default Response;

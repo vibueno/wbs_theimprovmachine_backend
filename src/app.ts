@@ -13,8 +13,10 @@ app.use(cors());
 // Routes
 import appRoutes from './routes/App';
 import suggestionsRoutes from './routes/Suggestions';
+import categoriesRoutes from './routes/Categories';
 
 app.use('/suggestions', suggestionsRoutes);
+app.use('/categories', categoriesRoutes);
 app.use('*', appRoutes);
 
 export default app;

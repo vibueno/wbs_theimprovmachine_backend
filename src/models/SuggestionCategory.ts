@@ -7,6 +7,7 @@ import JsonPaths from '../types/JsonPaths';
 class SuggestionCategory {
   private id: number;
   private title: string;
+  private description: string;
   private contenttype: string;
   private sourcetype: string;
   private basepath: string;
@@ -35,6 +36,7 @@ class SuggestionCategory {
   constructor(
     id: number,
     title: string,
+    description: string,
     contenttype: string,
     sourcetype: string,
     basepath: string,
@@ -43,6 +45,7 @@ class SuggestionCategory {
   ) {
     this.id = id;
     this.title = title;
+    this.description = description;
     this.contenttype = contenttype;
     this.sourcetype = sourcetype;
     this.basepath = basepath;
@@ -56,6 +59,10 @@ class SuggestionCategory {
 
   public getTitle = (): string => {
     return this.title;
+  };
+
+  public getDescription = (): string => {
+    return this.description;
   };
 
   public getSourceType = (): string => {
