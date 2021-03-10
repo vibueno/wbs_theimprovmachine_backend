@@ -6,13 +6,14 @@ CREATE TYPE sourcetype AS ENUM ( 'DB', 'API' );
 
 CREATE TABLE suggestioncategory (
   id SERIAL PRIMARY KEY,
+  name VARCHAR(20) UNIQUE NOT NULL,
   contenttype contenttype NOT NULL,
   sourcetype sourcetype NOT NULL,
-  title VARCHAR(20) UNIQUE NOT NULL,
+  title VARCHAR(20) NOT NULL,
   description VARCHAR(50) NOT NULL,
   basepath VARCHAR(100),
   jsonpaths JSONB,
-  key VARCHAR(100)
+  apikey VARCHAR(100)
 );
 
 DROP TABLE IF EXISTS suggestion;

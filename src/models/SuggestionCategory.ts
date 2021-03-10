@@ -6,13 +6,14 @@ import JsonPaths from '../types/JsonPaths';
 
 class SuggestionCategory {
   private id: number;
+  private name: string;
   private title: string;
   private description: string;
   private contenttype: string;
   private sourcetype: string;
   private basepath: string;
   private jsonpaths: JSON;
-  private key: string;
+  private apikey: string;
 
   public static getDBCategory = async (
     categoryTitle: string
@@ -20,7 +21,7 @@ class SuggestionCategory {
     const sqlQuery = `
     SELECT *
     FROM suggestioncategory sc
-    WHERE sc.title = $1`;
+    WHERE sc.name = $1`;
 
     const query: QueryConfig = {
       text: sqlQuery,
@@ -35,26 +36,32 @@ class SuggestionCategory {
 
   constructor(
     id: number,
+    name: string,
     title: string,
     description: string,
     contenttype: string,
     sourcetype: string,
     basepath: string,
     jsonpaths: JSON,
-    key: string
+    apikey: string
   ) {
     this.id = id;
+    this.name = name;
     this.title = title;
     this.description = description;
     this.contenttype = contenttype;
     this.sourcetype = sourcetype;
     this.basepath = basepath;
     this.jsonpaths = jsonpaths;
-    this.key = key;
+    this.apikey = apikey;
   }
 
   public getId = (): number => {
     return this.id;
+  };
+
+  public getName = (): string => {
+    return this.name;
   };
 
   public getTitle = (): string => {
@@ -82,8 +89,8 @@ class SuggestionCategory {
     return paths;
   };
 
-  public getKey = (): string => {
-    return this.key;
+  public getApiKey = (): string => {
+    return this.apikey;
   };
 }
 

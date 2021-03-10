@@ -32,7 +32,7 @@ const buildSuggestionResponseData = (
   );
 
   return {
-    category: category.getTitle(),
+    category: category.getName(),
     contenttype: category.getContentType(),
     suggestions: suggestionsContent
   };
@@ -60,6 +60,7 @@ const buildSuggestionCategoriesResponseData = (
   suggestionCategories.forEach(suggestionCategory =>
     response.push({
       id: suggestionCategory.getId().toString(),
+      name: suggestionCategory.getName(),
       title: suggestionCategory.getTitle(),
       description: suggestionCategory.getDescription()
     })

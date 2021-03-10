@@ -96,13 +96,14 @@ const controller = {
 
       const category = new SuggestionCategory(
         categoryDBRow.id,
+        categoryDBRow.name,
         categoryDBRow.title,
         categoryDBRow.description,
         categoryDBRow.contenttype,
         categoryDBRow.sourcetype,
         categoryDBRow.basepath,
         categoryDBRow.jsonpaths,
-        categoryDBRow.key
+        categoryDBRow.apikey
       );
 
       let suggestionList;

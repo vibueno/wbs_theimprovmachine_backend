@@ -34,13 +34,14 @@ class SuggestionCategoryList {
       suggestionCategories.push(
         new SuggestionCategory(
           suggestionCategory.id,
+          suggestionCategory.name,
           suggestionCategory.title,
           suggestionCategory.description,
           suggestionCategory.contenttype,
           suggestionCategory.sourcetype,
           suggestionCategory.basepath,
           suggestionCategory.jsonpaths,
-          suggestionCategory.key
+          suggestionCategory.apikey
         )
       );
     });

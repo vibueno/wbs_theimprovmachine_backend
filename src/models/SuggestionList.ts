@@ -38,7 +38,7 @@ class SuggestionList {
     amount: number
   ): Promise<QueryResult> => {
     const sqlQuery = `
-      SELECT sc.id, sc.title, sc.basepath, s.content
+      SELECT sc.id, sc.name, sc.basepath, s.content
       FROM suggestion s
       JOIN suggestioncategory sc ON s.suggestioncategoryid = $1
       WHERE sc.id = s.suggestioncategoryid
@@ -79,7 +79,7 @@ class SuggestionList {
       if (basePathHasKey)
         request = await apiRequest(
           fillInStrTemplate(category.getBasePath(), [
-            { param: 'key', value: decrypt(category.getKey()) }
+            { param: 'key', value: decrypt(category.getApiKey()) }
           ])
         );
       else request = await apiRequest(basePath);
