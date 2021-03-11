@@ -62,7 +62,8 @@ const buildSuggestionCategoriesResponseData = (
       id: suggestionCategory.getId().toString(),
       name: suggestionCategory.getName(),
       title: suggestionCategory.getTitle(),
-      description: suggestionCategory.getDescription()
+      description: suggestionCategory.getDescription(),
+      contenttype: suggestionCategory.getContentType()
     })
   );
 
