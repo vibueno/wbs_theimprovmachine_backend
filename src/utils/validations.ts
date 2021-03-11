@@ -1,4 +1,4 @@
-const isPositiveInt = (val: string) => {
+const isPositiveInt = (val: string): boolean => {
   const re = new RegExp('^[1-9]\\d*$', 'i');
   return re.test(val);
 };

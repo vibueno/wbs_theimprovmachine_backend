@@ -29,10 +29,14 @@ import { isPositiveInt } from '../utils/validations';
  * @param {Request} req - Expects query params category:number and amount:number
  */
 const validateQueryParams = (req: Request) => {
-  const { category, amount } = req.body;
+  /* I didn't find a better approach for making it work
+  but it truly isn't nice to cast as any
+  */
+  const queryCategory: any = req.query.category;
+  const queryAmount: any = req.query.amount;
 
   // query param validations: category
-  if (!category)
+  if (!queryCategory)
     throw buildResponse(
       httpResponse.badRequest,
       operationResult.fail,
@@ -42,7 +46,7 @@ const validateQueryParams = (req: Request) => {
     );
 
   // query param validations: amount
-  if (!amount)
+  if (!queryAmount)
     throw buildResponse(
       httpResponse.badRequest,
       operationResult.fail,
@@ -51,7 +55,7 @@ const validateQueryParams = (req: Request) => {
       ])
     );
 
-  if (!isPositiveInt(amount))
+  if (!isPositiveInt(queryAmount.toString()))
     throw buildResponse(
       httpResponse.badRequest,
       operationResult.fail,
@@ -60,7 +64,7 @@ const validateQueryParams = (req: Request) => {
       ])
     );
 
-  if (amount > maxSuggestionsPerRequest)
+  if (queryAmount > maxSuggestionsPerRequest)
     throw buildResponse(
       httpResponse.badRequest,
       operationResult.fail,
@@ -81,9 +85,13 @@ const controller = {
     try {
       validateQueryParams(req);
 
-      const categoryDB = await SuggestionCategory.getDBCategory(
-        req.body.category
-      );
+      /* I didn't find a better approach for making it work
+      but it truly isn't nice to cast as any
+      */
+      const queryCategory: any = req.query.category;
+      const queryAmount: any = req.query.amount;
+
+      const categoryDB = await SuggestionCategory.getDBCategory(queryCategory);
 
       if (categoryDB.rowCount === 0)
         throw buildResponse(
@@ -112,14 +120,14 @@ const controller = {
         case categorySources.DB:
           suggestionList = await SuggestionList.createFromDB(
             category,
-            req.body.amount
+            queryAmount
           );
 
           break;
         case categorySources.API:
           suggestionList = await SuggestionList.createFromAPI(
             category,
-            req.body.amount
+            queryAmount
           );
 
           break;
@@ -138,7 +146,7 @@ const controller = {
           fillInStrTemplate(msgSuggestionsFetched, [
             {
               param: 'amount',
-              value: req.body.amount
+              value: queryAmount
             },
             {
               param: 'suggestionCategoryTitle',
