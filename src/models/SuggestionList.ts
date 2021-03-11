@@ -73,19 +73,20 @@ class SuggestionList {
     const basePath = category.getBasePath();
     const basePathHasKey = strTemplateHasParams(basePath);
 
-    let request;
-
-    for (let i = 1; i <= amount; i++)
-      if (basePathHasKey)
-        request = await apiRequest(
-          fillInStrTemplate(category.getBasePath(), [
-            { param: 'key', value: decrypt(category.getApiKey()) }
-          ])
+    for (let i = 1; i <= amount; i++) {
+      if (basePathHasKey) {
+        // Double assignment needed to avoid compilation error
+        let decriptedKey: string = '';
+        decriptedKey = decrypt(category.getApiKey());
+        requests.push(
+          await apiRequest(
+            fillInStrTemplate(category.getBasePath(), [
+              { param: 'key', value: decriptedKey }
+            ])
+          )
         );
-      else request = await apiRequest(basePath);
-
-    requests.push(request);
-
+      } else requests.push(await apiRequest(basePath));
+    }
     return await Promise.all(requests);
   };
 
