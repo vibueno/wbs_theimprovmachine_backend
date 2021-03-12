@@ -1,9 +1,9 @@
 import ResponseSuggestion from './ResponseSuggestion';
 
-type ResponseData = {
+type ResponseSuggestionData = {
   category: string;
   contenttype: string;
   suggestions: ResponseSuggestion[];
 };
 
-export default ResponseData;
+export default ResponseSuggestionData;

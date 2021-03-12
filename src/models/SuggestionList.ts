@@ -38,7 +38,7 @@ class SuggestionList {
     amount: number
   ): Promise<QueryResult> => {
     const sqlQuery = `
-      SELECT sc.id, sc.title, sc.basepath, s.content
+      SELECT sc.id, sc.name, sc.basepath, s.content
       FROM suggestion s
       JOIN suggestioncategory sc ON s.suggestioncategoryid = $1
       WHERE sc.id = s.suggestioncategoryid
@@ -73,19 +73,20 @@ class SuggestionList {
     const basePath = category.getBasePath();
     const basePathHasKey = strTemplateHasParams(basePath);
 
-    let request;
-
-    for (let i = 1; i <= amount; i++)
-      if (basePathHasKey)
-        request = await apiRequest(
-          fillInStrTemplate(category.getBasePath(), [
-            { param: 'key', value: decrypt(category.getKey()) }
-          ])
+    for (let i = 1; i <= amount; i++) {
+      if (basePathHasKey) {
+        // Double assignment needed to avoid compilation error
+        let decriptedKey: string = '';
+        decriptedKey = decrypt(category.getApiKey());
+        requests.push(
+          await apiRequest(
+            fillInStrTemplate(category.getBasePath(), [
+              { param: 'key', value: decriptedKey }
+            ])
+          )
         );
-      else request = await apiRequest(basePath);
-
-    requests.push(request);
-
+      } else requests.push(await apiRequest(basePath));
+    }
     return await Promise.all(requests);
   };
 
