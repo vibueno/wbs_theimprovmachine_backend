@@ -39,7 +39,8 @@
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-      "ecmaVersion": 12
+      "ecmaVersion": 12,
+      "sourceType": "module"
     },
     "plugins": [
       "@typescript-eslint"
@@ -52,11 +53,21 @@
     }
   },
   "jest": {
+    "testEnvironment": "node",
+    "verbose": true,
     "collectCoverageFrom": [
-      "*.js"
+      "./src/**/*"
+    ],
+    "transform": {
+      "^.+\\.ts?$": "ts-jest"
+    },
+    "testPathIgnorePatterns": [
+      "./build"
     ],
     "coveragePathIgnorePatterns": [
-      "/node_modules/"
+      "/node_modules/",
+      "./src/index.ts",
+      "./src/routes"
     ],
     "coverageThreshold": {
       "global": {
@@ -65,29 +76,38 @@
         "functions": 100,
         "lines": 100
       }
-    }
+    },
+    "setupFiles": [
+      "dotenv/config"
+    ]
   },
   "devDependencies": {
-    "@types/body-parser": "^1.19.0",
     "@types/cors": "^2.8.10",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.11",
-    "@typescript-eslint/eslint-plugin": "^4.15.2",
-    "@typescript-eslint/parser": "^4.15.2",
-    "eslint": "^7.20.0",
+    "@types/jest": "^26.0.20",
+    "@types/jsonpath": "^0.2.0",
+    "@types/pg": "^7.14.10",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "cors": "^2.8.5",
+    "eslint": "^7.21.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.3.1",
     "jest": "^26.6.3",
-    "nodemon": "^2.0.7",
-    "ts-node": "^9.1.1",
+    "remove": "^0.1.5",
+    "ts-jest": "^26.5.2",
+    "ts-node-dev": "^1.1.6",
     "typescript": "^4.2.2"
   },
   "dependencies": {
-    "cors": "^2.8.5",
+    "axios": "^0.21.1",
+    "crypto-ts": "^1.0.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "remove": "^0.1.5",
-    "ts-node-dev": "^1.1.6"
+    "jsonpath": "^1.1.0",
+    "pg": "^8.5.1"
   }
 }

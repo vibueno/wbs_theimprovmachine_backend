@@ -107,3 +107,11 @@ dist
 
 # build directory
 build
+
+# temporary files
+*~
+*.autosave
+
+# DB data
+
+sql/data

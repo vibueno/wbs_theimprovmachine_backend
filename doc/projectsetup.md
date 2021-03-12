@@ -1,19 +1,6 @@
-# The Improv Machine - Backend - Technical Details
+# The Improv Machine - Backend - Project set-up
 
-This project have been created using:
-
-- [Atom](https://atom.io)
-- [Node.js](https://nodejs.org/en)
-- [Express.js](https://expressjs.com)
-- [TypeScript](https://www.typescriptlang.org)
-- [Jest](https://jestjs.io)
-- [ESLint](https://eslint.org)
-- [Prettier](https://prettier.io)
-
-in the following environment:
-
-- [Fedora](https://getfedora.org)
-- [Atom](https://atom.io)
+_Please take into account that some dependencies may have changed during the development of the project. For a completely accurate list, check package.json_
 
 The following steps have been performed in order to set-up the project:
 
@@ -39,17 +26,17 @@ npm init
 4. Install dependencies:
 
 ```bash
-npm i nodemon
+npm i --savedev ts-node-dev
+npm i --savedev cors
 npm i dotenv
 npm i express
-npm i body-parser
-npm i cors
+...
 ```
 
 5. Install TypeScript
 
 ```bash
-npm install typescript --save-dev
+npm i typescript --save-dev
 ```
 
 6. Install TypeScript compiler

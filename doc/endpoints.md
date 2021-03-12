@@ -1,6 +1,6 @@
 # The Improv Machine - Backend - Endpoints
 
-| HTTP Method | Endpoint | Description |
-| ----------- | -------- | ----------- |
-| GET         |          |             |
-| POST        |          |             |
+| HTTP Method | Endpoint                                                   | Description                                                                                     | Possible values                                                                                                                       |
+| ----------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| GET         | suggestions?category=categoryTitle&amount=suggestionAmount | Retrieves an amount of suggestions determined by _suggestionAmount_ of category _categoryTitle_ | _categoryTitle:_<ul><li>object</li><li>sms</li><li>randomimage</li></ul> _suggestionAmount:_ <ul><li>min: 1</li><li>max: 10</li></ul> |
+| POST        |                                                            |                                                                                                 |                                                                                                                                       |
