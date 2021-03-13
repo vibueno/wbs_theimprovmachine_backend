@@ -23,6 +23,9 @@ CREATE TABLE suggestion (
   content JSONB NOT NULL
 );
 
+DROP INDEX IF EXISTS uq_suggestion_content;
+CREATE UNIQUE INDEX uq_suggestion_content on suggestion ((content ->'text1'), (content ->'text2'));
+
 ALTER TABLE suggestion ADD CONSTRAINT fk_suggestion_suggestioncategoryid_suggestioncategory_id FOREIGN KEY (suggestioncategoryid) REFERENCES suggestioncategory (id) ON DELETE NO ACTION;
 
 DROP TABLE IF EXISTS game;
