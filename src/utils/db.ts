@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 
 const { DBUSER, DBHOST, DBNAME, DBPASS } = process.env;
-// Withot the non-null assertion operator it is not possible to get the port
+// Without the non-null assertion operator it is not possible to get the port
 // and parse it to int
 const DBPORT: number = parseInt(process.env.DBPORT!);
 
@@ -10,7 +10,8 @@ const pool: Pool = new Pool({
   host: DBHOST,
   database: DBNAME,
   password: DBPASS,
-  port: DBPORT
+  port: DBPORT,
+  ssl: { rejectUnauthorized: false }
 });
 
 export default pool;
