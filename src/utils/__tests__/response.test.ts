@@ -67,6 +67,7 @@ describe('Module validations', () => {
       'DB',
       'http//test.com',
       null as any,
+      null as any,
       null as any
     );
 
