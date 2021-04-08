@@ -1,6 +1,7 @@
 class TemplateParamsError extends Error {
   constructor(message: string) {
     super(message);
+    Object.setPrototypeOf(this, TemplateParamsError.prototype);
     this.name = 'TemplateParamsError';
   }
 }
@@ -8,6 +9,7 @@ class TemplateParamsError extends Error {
 class TemplateInvalidError extends Error {
   constructor(message: string) {
     super(message);
+    Object.setPrototypeOf(this, TemplateInvalidError.prototype);
     this.name = 'TemplateInvalidError';
   }
 }
@@ -15,6 +17,7 @@ class TemplateInvalidError extends Error {
 class ExternalAPIAccessError extends Error {
   constructor(message: string) {
     super(message);
+    Object.setPrototypeOf(this, ExternalAPIAccessError.prototype);
     this.name = 'ExternalAPIAccessError';
   }
 }

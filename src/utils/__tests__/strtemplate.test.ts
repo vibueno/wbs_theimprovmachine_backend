@@ -1,5 +1,4 @@
 import { strTemplateHasParams, fillInStrTemplate } from '../strtemplate';
-import { TemplateInvalidError, TemplateParamsError } from '../error';
 
 describe('Module message template', () => {
   describe('Function templateHasParams', () => {
@@ -18,9 +17,9 @@ describe('Module message template', () => {
 
   describe('Function fillInMsgTemplate', () => {
     test('it should throw an error if the template contains no params', () => {
-      expect(() =>
-        fillInStrTemplate('Hello', [{ param: 'planet', value: 'Earth' }])
-      ).toThrow(TemplateInvalidError);
+      expect(() => {
+        fillInStrTemplate('Hello', [{ param: 'planet', value: 'Earth' }]);
+      }).toThrow();
     });
 
     test('it should throw an error if the template params are not well defined', () => {
@@ -28,13 +27,13 @@ describe('Module message template', () => {
         fillInStrTemplate('Hello ${planet', [
           { param: 'planet', value: 'Earth' }
         ])
-      ).toThrow(TemplateInvalidError);
+      ).toThrow();
     });
 
     test('it should throw an error if some params are not passed', () => {
       expect(() =>
         fillInStrTemplate('Hello ${planet}', [{ param: 'star', value: 'sun' }])
-      ).toThrow(TemplateParamsError);
+      ).toThrow();
     });
 
     test('it should return "Hello Earth"', () => {

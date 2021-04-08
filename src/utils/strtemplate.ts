@@ -22,7 +22,6 @@ const strTemplateHasParams = (strTemplate: string) => {
 
 const fillInStrTemplate = (
   strTemplate: string,
-  //TODO: create interface
   strData: StringTemplateParams[]
 ): string => {
   if (!strTemplateHasParams(strTemplate))
