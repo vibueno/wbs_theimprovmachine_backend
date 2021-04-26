@@ -13,6 +13,8 @@ This repository contains the backend of _The Improv Machine_: my final project f
 
 _The Improv Machine_ is an Improv (improvisational theatre) suggestions generator that can be used by improvisers to get scenes started. For a more detailed description, check the [project description doc](./doc/projectdescription.md).
 
+If you want a visual introduction to the project, check this [video](https://www.youtube.com/watch?v=93zvJeuVrD4).
+
 If you are interested in how the project was set-up, check the [set-up guide](./doc/projectsetup.md).
 
 If you are interested in the technologies behind it and the standards used, check the [tech stack](./doc/techstack.md).
